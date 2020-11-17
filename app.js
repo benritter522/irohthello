@@ -42,3 +42,13 @@ console.log('maybe connected');
             
 
 // end condition
+    // loop through all elements of both arrays AFTER EVERY PIECE IS PLACED
+        // if checkSpaceIsAvailable() (if value is 0)
+            // if any move is valid for placing a value 1 piece (white) OR if any move is valid for placing value 2 (black)
+                // return false, gameOver is not true yet
+            // else --so if there is no valid move for this space
+                // continue through the loop....if you get through the whole look return true game is over...
+                // maybe decided by the current element being checked being the last in the array? this loop
+                // should never get to the end of the board if ANY move is possible bc it returns as soon
+                // as it finds a valid move, so that should be airtight.....hopefully :)
+            

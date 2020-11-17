@@ -1,3 +1,24 @@
 * {
-    background-color: red;
+    /* background-color: purple; */
+
+    align-content: center;
+    justify-content: center;
+}
+
+.board {
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    background-color: grey;
+    width: 40vw;
+    height: 30vh;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+.grid {
+    width: 80%;
+    height: 80%;
+    background-color: green;
+
 }
