@@ -4,29 +4,54 @@ console.log('maybe connected');
 // modal
 
 // set up players 1 and 2
-    // player 1 readout
-    // player 2 readout
+// player 1 readout
+// player 2 readout
 
 
-class Grid {
+class Board {
     constructor() {
+        
+    }
+    createGrid() {
+
+        // intial board setup
+        const gridDiv = document.createElement('div');
+        gridDiv.classList.add('grid');
+        
+        // create 10x10 2D array
+        // const gridArray = [];
+        for(let x = 0; x < 10; x ++) {
+            for(let y = 0; y < 10; y ++) {
+                const piece = new Piece(/*0, */ x, y);
+                piece.makePieceDiv(piece.x, piece.y);
+            }
+        }
+        // console.log(gridArray);
+        // outer row/column of the arrays = null
+        // 8x8 'active' spaces
+        
+        
+        
+    }
+    setUpStart() {
+        // set up the 4 starting pieces
 
     }
-    createGrid() {}
-    
-
 }
+
+
 
 // Going to make a js class for player pieces
 class Piece {
-    constructor(/*value, */row, column) {
+    constructor(/*value, */x, y) {
         // this.value = value;
-        this.row = row;
-        this.column = column;
+        this.x = x;
+        this.y = y;
     }
     makePieceDiv(x, y) {
         const spaceDiv = document.createElement('div');
         const ghostPiece = document.createElement('div');
+        const gridDiv = document.querySelector('.grid');
         
         spaceDiv.classList.add('spaces');
         ghostPiece.classList.add('pieces');
@@ -40,23 +65,23 @@ class Piece {
         }
         
         // the classes are rows 
-        spaceDiv.classList.add(`${x}`);
-        ghostPiece.classList.add(`${x}`);
+        spaceDiv.classList.add(`${x}-Row`);
+        ghostPiece.classList.add(`${x}-Row`);
         
         //making class names that aren't purely numerical for debugging's sake
-        spaceDiv.classList.add(`${y}`);
-        ghostPiece.classList.add(`${y}`);
+        // spaceDiv.classList.add(`${y}`);
+        // ghostPiece.classList.add(`${y}`);
         
         // // the id's are columns in the grid
-        // spaceDiv.id = `col${y}`;
-        // ghostPiece.id = `col${y}`;
+        spaceDiv.id = `${y}-Column`;
+        ghostPiece.id = `${y}-Column`;
         
         // gridArray[x[y]] = spaceDiv;
         
         gridDiv.appendChild(spaceDiv);
         // console.log(x + ", " + y);
         
-        console.log(spaceDiv.classList.item(1));
+        console.log(spaceDiv.classList.item(1)); // THIS IS IMPORTANT
 
     }
     isValidSpace(){}
@@ -68,26 +93,14 @@ class Piece {
         // toggle black class
         // toggle white class
 }
+const board = new Board();
+board.createGrid();
+board.setUpStart();
 
-
-// intial board setup
-const gridDiv = document.querySelector('.grid')
-
-    // create 10x10 2D array
-    const gridArray = [];
-    for(let x = 0; x < 10; x ++) {
-        for(let y = 0; y < 10; y ++) {
-
-            const piece = new Piece(/*0, */ x, y);
-            piece.makePieceDiv(piece.row, piece.column);
-
-        }
-    }
-    console.log(gridArray);
-        // outer row/column of the arrays = null
-        // 8x8 'active' spaces
-
-    // set up the 4 starting pieces
+const firstCharAsNumber = (str) => {
+    return Number(str[0]);
+}
+// console.log(firstCharAsNumber("5row")+5);
 
 // player tries to make a move
     // isValidMove()
