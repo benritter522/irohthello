@@ -1,5 +1,5 @@
-console.log('yes connected');
-console.log('maybe connected');
+// black always moves first in othello
+// less experienced player should choose black
 
 // modal
 
@@ -10,45 +10,58 @@ console.log('maybe connected');
 
 class Board {
     constructor() {
-        
+        // this.array2D = [];
     }
     createGrid() {
 
         // intial board setup
-        const gridDiv = document.createElement('div');
-        gridDiv.classList.add('grid');
+        // const gridDiv = document.querySelector('.grid');
         
         // create 10x10 2D array
         // const gridArray = [];
         for(let x = 0; x < 10; x ++) {
             for(let y = 0; y < 10; y ++) {
-                const piece = new Piece(/*0, */ x, y);
-                piece.makePieceDiv(piece.x, piece.y);
+                const piece = new Piece(x, y);
+                piece.makePieceDiv();//piece.x, piece.y);
             }
         }
         // console.log(gridArray);
         // outer row/column of the arrays = null
         // 8x8 'active' spaces
-        
-        
-        
     }
     setUpStart() {
         // set up the 4 starting pieces
+        const starterWhitePieces = [
+            document.getElementById('R4C4Piece'),
+            document.getElementById('R5C5Piece')
+            // document.querySelector('.R4 .C4'), //couldn't use classes that start with numbers?
+            // document.querySelector('.R5 .C5')
+        ]
 
+        const starterBlackPieces = [
+            document.getElementById('R4C5Piece'),
+            document.getElementById('R5C4Piece')
+            // document.querySelector('.R4 .C5'),
+            // document.querySelector('.R5 .C4'),
+        ]
+
+        starterBlackPieces.forEach(element => {
+            element.classList.add('black');
+        });
+
+        starterWhitePieces.forEach(element => {
+            element.classList.add('white');
+        });
     }
 }
 
-
-
 // Going to make a js class for player pieces
 class Piece {
-    constructor(/*value, */x, y) {
-        // this.value = value;
+    constructor(x, y) {
         this.x = x;
         this.y = y;
     }
-    makePieceDiv(x, y) {
+    makePieceDiv() { //x, y) {
         const spaceDiv = document.createElement('div');
         const ghostPiece = document.createElement('div');
         const gridDiv = document.querySelector('.grid');
@@ -57,34 +70,44 @@ class Piece {
         ghostPiece.classList.add('pieces');
         ghostPiece.classList.add('empty');
         
-        if(x === 0 || y === 0 || x === 9 || y === 9) {
+        if(this.x === 0 || this.y === 0 || this.x === 9 || this.y === 9) {
             spaceDiv.classList.add('edgeSpaces'); 
         } else {
             spaceDiv.classList.add('gameSpaces'); 
             spaceDiv.appendChild(ghostPiece);
+            spaceDiv.addEventListener("click", this.placePiece);
         }
         
-        // the classes are rows 
-        spaceDiv.classList.add(`${x}-Row`);
-        ghostPiece.classList.add(`${x}-Row`);
+        /*
+        // // the classes are rows 
+        // spaceDiv.classList.add(`R${x}`);
+        // ghostPiece.classList.add(`R${x}`);
         
-        //making class names that aren't purely numerical for debugging's sake
-        // spaceDiv.classList.add(`${y}`);
-        // ghostPiece.classList.add(`${y}`);
+        // //making class names that aren't purely numerical for debugging's sake
+        // spaceDiv.classList.add(`C${y}`);
+        // ghostPiece.classList.add(`C${y}`);
+        */
         
         // // the id's are columns in the grid
-        spaceDiv.id = `${y}-Column`;
-        ghostPiece.id = `${y}-Column`;
-        
-        // gridArray[x[y]] = spaceDiv;
+        spaceDiv.id = `R${this.x}C${this.y}Space`;
+        ghostPiece.id = `R${this.x}C${this.y}Piece`;
         
         gridDiv.appendChild(spaceDiv);
+
         // console.log(x + ", " + y);
-        
-        console.log(spaceDiv.classList.item(1)); // THIS IS IMPORTANT
+        // console.log(spaceDiv.classList.item(1)); // THIS IS IMPORTANT FOR ANOTHER IDEA  
+    }
+    placePiece() {
+        alert(`you've clicked piece ${this.id}`); //  BIG MAN AT THE RIIIMMMMMMM
+        this.isValidSpace();
+        this.flipSandwhichMeats();
+    }
+    isValidSpace(){
 
     }
-    isValidSpace(){}
+    flipSandwhichMeats(){
+        
+    }
 
     becomeBlack() {}
         // toggle black class
@@ -97,10 +120,13 @@ const board = new Board();
 board.createGrid();
 board.setUpStart();
 
-const firstCharAsNumber = (str) => {
-    return Number(str[0]);
+const grabSecondCharAsNumber = (str) => {
+    return Number(str[1]);
 }
-// console.log(firstCharAsNumber("5row")+5);
+const grabFourthCharAsNumber = (str) => {
+    return Number(str[3]);
+}
+// console.log(grabFirstCharAsNumber("5row")+5);
 
 // player tries to make a move
     // isValidMove()

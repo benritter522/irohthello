@@ -62,7 +62,7 @@ body {
     /* for now that's not worth the effort...maybe never. */
 }
 .pieces {
-    background-color: black;
+    background-color: blue;
     width: 100%;
     height: 100%;
     border-radius: 50%;
