@@ -1,24 +1,82 @@
 * {
-    /* background-color: purple; */
-
+    background-color: darkgrey;
     align-content: center;
     justify-content: center;
+    text-align: center;
+}
+body {
+    background-color: darkolivegreen;
+
 }
 
+
 .board {
+    /* JUST HAD AN IDEA. MAKE THE BOARD REALLY WIDE AND 
+    TURN THE BOARD INTO A SEATING AREA FOR
+    TWO CHARACTERS IT WILL SHOW SITTING AT THE BOARD
+    .GRID IS ENOUGH TO BE THE BOARD ON ITS OWN */
     position: absolute;
-    top: 30%;
-    left: 30%;
+    top: 20%;
+    left: 10%;
     background-color: grey;
-    width: 40vw;
-    height: 30vh;
+    /* width: 80%;
+    height: 60%; */
+    width: 900px;
+    height: 500px;
     display: flex;
     align-items: center;
     justify-items: center;
+    border: 10px solid black;
+    border-radius: 30px;
 }
 .grid {
-    width: 80%;
-    height: 80%;
-    background-color: green;
+    /* width: 80%;
+    height: 80%; /*padding-top: 100% for a 1-1 ratio?? */
+    width: 400px;
+    height: 400px;
+    background-color: darkgreen;
+    border: 5px solid black;
+    border-radius: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    justify-content: space-between;
+    
+}
+.spaces {
+    width: 10%;
+    height: 10%;
+    padding: 1%;
+    box-sizing: border-box;
+    border: 1px solid darkgreen;
+    border-radius: 5px;
+    background: green;
 
 }
+.edgeSpaces {
+    background-color: darkgreen;
+    border-radius: 10px;
+
+    /* display: none; */
+    /* can choose later to reformat based on 8x8 grid with "display-none" for the edge spaces. */
+    /* for now that's not worth the effort...maybe never. */
+}
+.pieces {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.empty { /* value = 0 for a space with no piece, piece matches background */ 
+    background-color: darkgreen;
+}
+
+.white {/* value = 1 for a space with no piece, piece matches background */ 
+    background-color: white;
+}
+
+.black {/* value = 2 for a space with no piece, piece matches background */ 
+    background-color: black;
+}
+
