@@ -103,11 +103,83 @@ class Piece {
 
         // isValidSpace(this.id);
         
-        const x = grabSecondCharAsNumber(this.id);
-        const y = grabFourthCharAsNumber(this.id);
+        // grab center element's x and y indicies
+        // going to refer to things as 1-9 with center being 5, top left being 1
+        const x_center = grabSecondCharAsNumber(this.id);
+        const y_center = grabFourthCharAsNumber(this.id);
 
-        isValidSpace(x,y);
+        const x_neighbors = [ 0,
         
+            x_center - 1,   // neigbor 1
+            x_center - 1,   // neigbor 2
+            x_center - 1,   // neigbor 3
+            x_center,       // neigbor 4
+            x_center,       // neigbor 5 = SELF
+            x_center,       // neigbor 6
+            x_center + 1,   // neigbor 7
+            x_center + 1,   // neigbor 8
+            x_center + 1,   // neigbor 9
+        ]
+
+        const y_neighbors = [ 0,
+        
+            y_center - 1,   // neigbor 1
+            y_center,       // neigbor 2
+            y_center + 1,   // neigbor 3
+            y_center - 1,   // neigbor 4
+            y_center,       // neigbor 5 = SELF
+            y_center + 1,   // neigbor 6
+            y_center - 1,   // neigbor 7
+            y_center,       // neigbor 8
+            y_center + 1,   // neigbor 9
+        ]
+        // // neigbor 1 -- up left
+        // const x_neighbor1 = x_center - 1;
+        // const y_neighbor1 = y_center - 1;
+
+        // // neigbor 2 -- up mid
+        // const x_neighbor2 = x_center - 1;
+        // const y_neighbor2 = y_center;
+
+        // // neigbor 3 -- up right
+        // const x_neighbor3 = x_center - 1;
+        // const y_neighbor3 = y_center + 1;
+
+        // // neigbor 4 -- left mid
+        // const x_neighbor4 = x_center;
+        // const y_neighbor4 = y_center - 1;
+
+        // //neighbor 5 is just center, already done up top
+
+        // // neigbor 6 -- right mid
+        // const x_neighbor6 = x_center - 1;
+        // const y_neighbor6 = y_center + 1;
+
+        // // neigbor 7 -- dn left
+        // const x_neighbor7 = x_center + 1;
+        // const y_neighbor7 = y_center - 1;
+
+        // // neigbor 8 -- dn mid
+        // const x_neighbor8 = x_center + 1;
+        // const y_neighbor8 = y_center;
+
+        // // neigbor 9 -- dn right
+        // const x_neighbor9 = x_center - 1;
+        // const y_neighbor9 = y_center - 1;
+
+
+        for(let i = 1; i <= 9; i++) {
+            // checkDirection(`x_neighbor${i}`,`y_neighbor${i}`);
+            console.log(x_neighbors[i],y_neighbors[i]);
+
+        }
+
+
+        // isValidSpace(x,y);
+        
+        /*  BRUTE FORCE IS NOT THE WAY TO GO I REFUUUUUUUSE
+            MUST FIND WAY TO LOOP, PASSING IN THE DIFFERENCE IN INDEX
+
         const upLeftDiv = document.getElementById(`R${x-1}C${y-1}Piece`);
         const upMidDiv = document.getElementById(`R${x-1}C${y}Piece`);
         const upRightDiv = document.getElementById(`R${x-1}C${y+1}Piece`);
@@ -122,16 +194,19 @@ class Piece {
         // console.log(center.id + " center"); //this.id
         // console.log(" ");
 
+        
+
         if(upLeftDiv.classList.contains('white') || upLeftDiv.classList.contains('black')) { //if it's truthy AKA it exists :)
             console.log(upLeftDiv.id + " up Left");
             const xUpLeft = grabSecondCharAsNumber(upLeftDiv.id) - x;
             const yUpLeft = grabFourthCharAsNumber(upLeftDiv.id) - y;
             console.log(xUpLeft + " " + yUpLeft);
 
+            
             // checkDirection(xUpLeft, yUpLeft);
             // while () {} // want this to run while upLeft piece's classList contains black or white
                 // const upperleftdiv = document.getElementById(`R${x + xUpLeft}C${y + yUpLeft}Piece`)
-                
+            
 
             this.classList.toggle('black');
             this.classList.toggle('white');
@@ -158,6 +233,8 @@ class Piece {
             console.log(downRightDiv.id + " down Right");
         }
 
+        */
+
         // this.flipSandwhichMeats();
 
         // this.classList.toggle('black'); // these need to be more specific...
@@ -172,18 +249,18 @@ class Piece {
     // // toggle white class
 }
     
-    const isValidSpace = (x,y) => {
-        console.log("hello world");
-        // const center = document.getElementById(`R${x}C${y}Piece`);
-        // console.log(center.id);
-    }
-    
-    // const checkDirection = (xUpLeft, yUpLeft) =>{
-
-    //     xUpLeft = grabSecondCharAsNumber(upLeftDiv.id) - x;
-    //     yUpLeft = grabFourthCharAsNumber(upLeftDiv.id) - y;
-    //     console.log(xUpLeft + " " + yUpLeft);
+    // const isValidSpace = (x,y) => {
+    //     console.log("hello world");
+    //     // const center = document.getElementById(`R${x}C${y}Piece`);
+    //     // console.log(center.id);
     // }
+    
+    const checkDirection = (xUpLeft, yUpLeft) =>{
+
+        xUpLeft = grabSecondCharAsNumber(upLeftDiv.id) - x;
+        yUpLeft = grabFourthCharAsNumber(upLeftDiv.id) - y;
+        console.log(xUpLeft + " " + yUpLeft);
+    }
 
 const board = new Board();
 board.createGrid();
