@@ -63,21 +63,29 @@ class Piece {
     }
     makePieceDiv() { //x, y) {
         const spaceDiv = document.createElement('div');
-        const ghostPiece = document.createElement('div');
+        const pieceDiv = document.createElement('div');
         const gridDiv = document.querySelector('.grid');
         
         spaceDiv.classList.add('spaces');
-        ghostPiece.classList.add('pieces');
-        ghostPiece.classList.add('empty');
+        pieceDiv.classList.add('pieces');
+        pieceDiv.classList.add('empty');
         
+        // weeds out the edge layer of the board
         if(this.x === 0 || this.y === 0 || this.x === 9 || this.y === 9) {
             spaceDiv.classList.add('edgeSpaces'); 
         } else {
+            // if piece is not an edge space, adds a piece with an event listener
             spaceDiv.classList.add('gameSpaces'); 
-            spaceDiv.appendChild(ghostPiece);
-            spaceDiv.addEventListener("click", this.placePiece);
+            spaceDiv.appendChild(pieceDiv);
+            pieceDiv.addEventListener("click", this.placePiece);
         }
         
+        // the id's are columns in the grid
+        spaceDiv.id = `R${this.x}C${this.y}Space`;
+        pieceDiv.id = `R${this.x}C${this.y}Piece`;
+        
+        gridDiv.appendChild(spaceDiv);
+
         /*
         // // the classes are rows 
         // spaceDiv.classList.add(`R${x}`);
@@ -88,19 +96,17 @@ class Piece {
         // ghostPiece.classList.add(`C${y}`);
         */
         
-        // // the id's are columns in the grid
-        spaceDiv.id = `R${this.x}C${this.y}Space`;
-        ghostPiece.id = `R${this.x}C${this.y}Piece`;
-        
-        gridDiv.appendChild(spaceDiv);
 
-        // console.log(x + ", " + y);
         // console.log(spaceDiv.classList.item(1)); // THIS IS IMPORTANT FOR ANOTHER IDEA  
     }
     placePiece() {
-        alert(`you've clicked piece ${this.id}`); //  BIG MAN AT THE RIIIMMMMMMM
-        this.isValidSpace();
-        this.flipSandwhichMeats();
+        // alert(`you've clicked piece ${this.id}`); //  BIG MAN AT THE RIIIMMMMMMM
+
+        // this.isValidSpace();
+        // this.flipSandwhichMeats();
+
+        this.classList.toggle('black'); // these need to be more specific...
+        this.classList.toggle('white'); // shouldn't allow something to have both black and white classes at the same time
     }
     isValidSpace(){
 
