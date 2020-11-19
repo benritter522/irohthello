@@ -99,21 +99,41 @@ class Piece {
 
         // console.log(spaceDiv.classList.item(1)); // THIS IS IMPORTANT FOR ANOTHER IDEA  
     }
-    placePiece() {
+    // validSpace(x,y) {
+    //     console.log("hello world");
+    //     // const upMiddle = document.getElementById(`R${this.x}C${this.y}Piece`);
+    //     // console.log(upMiddle.id);
+    // }
+    placePiece(e) {
         // alert(`you've clicked piece ${this.id}`); //  BIG MAN AT THE RIIIMMMMMMM
 
-        // this.isValidSpace();
+        // this.isValidSpace(this.id);
+
+        // const spot = document.getElementById(`R${e.x}C${e.y}Piece`);
+        // console.log(`R${e.x}C${e.y}Piece`);
+
+        
+        const x = grabSecondCharAsNumber(this.id);
+        const y = grabFourthCharAsNumber(this.id);
+        
+        // this.validSpace(x,y);
+
+
+
+        console.log(x + " " + y);
+
+
+
         // this.flipSandwhichMeats();
+
+
 
         this.classList.toggle('black'); // these need to be more specific...
         this.classList.toggle('white'); // shouldn't allow something to have both black and white classes at the same time
     }
-    isValidSpace(){
-
-    }
-    flipSandwhichMeats(){
+    // flipSandwhichMeats(){
         
-    }
+    // }
 
     becomeBlack() {}
         // toggle black class
