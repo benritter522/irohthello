@@ -85,7 +85,6 @@ class Piece {
         pieceDiv.id = `R${this.x}C${this.y}Piece`;
         
         gridDiv.appendChild(spaceDiv);
-
         /*
         // // the classes are rows 
         // spaceDiv.classList.add(`R${x}`);
@@ -95,53 +94,97 @@ class Piece {
         // spaceDiv.classList.add(`C${y}`);
         // ghostPiece.classList.add(`C${y}`);
         */
-        
-
         // console.log(spaceDiv.classList.item(1)); // THIS IS IMPORTANT FOR ANOTHER IDEA  
     }
-    // validSpace(x,y) {
-    //     console.log("hello world");
-    //     // const upMiddle = document.getElementById(`R${this.x}C${this.y}Piece`);
-    //     // console.log(upMiddle.id);
-    // }
-    placePiece(e) {
+
+    placePiece() { //could use e if needed for something, but what??
+
         // alert(`you've clicked piece ${this.id}`); //  BIG MAN AT THE RIIIMMMMMMM
 
-        // this.isValidSpace(this.id);
-
-        // const spot = document.getElementById(`R${e.x}C${e.y}Piece`);
-        // console.log(`R${e.x}C${e.y}Piece`);
-
+        // isValidSpace(this.id);
         
         const x = grabSecondCharAsNumber(this.id);
         const y = grabFourthCharAsNumber(this.id);
+
+        isValidSpace(x,y);
         
-        // this.validSpace(x,y);
+        const upLeftDiv = document.getElementById(`R${x-1}C${y-1}Piece`);
+        const upMidDiv = document.getElementById(`R${x-1}C${y}Piece`);
+        const upRightDiv = document.getElementById(`R${x-1}C${y+1}Piece`);
+        const leftMidDiv = document.getElementById(`R${x}C${y-1}Piece`);
+        // const center = document.getElementById(`R${x}C${y}Piece`);
+        const rightMidDiv = document.getElementById(`R${x}C${y+1}Piece`);
+        const downLeftDiv = document.getElementById(`R${x+1}C${y-1}Piece`);
+        const downMidDiv = document.getElementById(`R${x+1}C${y}Piece`);
+        const downRightDiv = document.getElementById(`R${x+1}C${y+1}Piece`);
 
+        // console.log(" ");
+        // console.log(center.id + " center"); //this.id
+        // console.log(" ");
 
+        if(upLeftDiv.classList.contains('white') || upLeftDiv.classList.contains('black')) { //if it's truthy AKA it exists :)
+            console.log(upLeftDiv.id + " up Left");
+            const xUpLeft = grabSecondCharAsNumber(upLeftDiv.id) - x;
+            const yUpLeft = grabFourthCharAsNumber(upLeftDiv.id) - y;
+            console.log(xUpLeft + " " + yUpLeft);
 
-        console.log(x + " " + y);
+            // checkDirection(xUpLeft, yUpLeft);
+            // while () {} // want this to run while upLeft piece's classList contains black or white
+                // const upperleftdiv = document.getElementById(`R${x + xUpLeft}C${y + yUpLeft}Piece`)
+                
 
-
+            this.classList.toggle('black');
+            this.classList.toggle('white');
+        }
+        if(upMidDiv) {
+            console.log(upMidDiv.id + " up Mid");
+        }
+        if(upRightDiv) {
+            console.log(upRightDiv.id + " up Right");
+        }
+        if(leftMidDiv) {
+            console.log(leftMidDiv.id + " left Mid");
+        }
+        if(rightMidDiv) {
+            console.log(rightMidDiv.id + " right Mid");
+        }
+        if(downLeftDiv) {
+            console.log(downLeftDiv.id + " down Left");
+        }
+        if(downMidDiv) {
+            console.log(downMidDiv.id + " down Mid");
+        }
+        if(downRightDiv) {
+            console.log(downRightDiv.id + " down Right");
+        }
 
         // this.flipSandwhichMeats();
 
-
-
-        this.classList.toggle('black'); // these need to be more specific...
-        this.classList.toggle('white'); // shouldn't allow something to have both black and white classes at the same time
+        // this.classList.toggle('black'); // these need to be more specific...
+        // this.classList.toggle('white'); // shouldn't allow something to have both black and white classes at the same time
     }
-    // flipSandwhichMeats(){
-        
+    // // flipSandwhichMeats(){}
+    // becomeBlack() {}
+    // // toggle black class
+    // // toggle white class
+    // becomeWhite() {}
+    // // toggle black class
+    // // toggle white class
+}
+    
+    const isValidSpace = (x,y) => {
+        console.log("hello world");
+        // const center = document.getElementById(`R${x}C${y}Piece`);
+        // console.log(center.id);
+    }
+    
+    // const checkDirection = (xUpLeft, yUpLeft) =>{
+
+    //     xUpLeft = grabSecondCharAsNumber(upLeftDiv.id) - x;
+    //     yUpLeft = grabFourthCharAsNumber(upLeftDiv.id) - y;
+    //     console.log(xUpLeft + " " + yUpLeft);
     // }
 
-    becomeBlack() {}
-        // toggle black class
-        // toggle white class
-    becomeWhite() {}
-        // toggle black class
-        // toggle white class
-}
 const board = new Board();
 board.createGrid();
 board.setUpStart();
