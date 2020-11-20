@@ -11,7 +11,7 @@ let player1Turn = true;
 let player2Turn = false;
 
 // ==============================================================================================================
-// START Declare neighbor direction arrays
+// START Declare neighbor direction arrays. Left-right, top-bottom.
 
 const x_neighborDirections = [ 0,
     -1,     // neigbor 1
@@ -59,13 +59,13 @@ class Board {
     setUpStart() {      // set up the 4 starting pieces
         
         const starterWhitePieces = [
-            document.getElementById('R4C4Piece'),
-            document.getElementById('R5C5Piece')
+            document.getElementById('R4C4'),
+            document.getElementById('R5C5')
         ]
 
         const starterBlackPieces = [
-            document.getElementById('R4C5Piece'),
-            document.getElementById('R5C4Piece')
+            document.getElementById('R4C5'),
+            document.getElementById('R5C4')
         ]
 
         starterBlackPieces.forEach(element => {
@@ -94,10 +94,10 @@ class Piece {
         const spaceDiv = document.createElement('div');
         const pieceDiv = document.createElement('div');
         const gridDiv = document.querySelector('.grid');
-
+        
         spaceDiv.classList.add('spaces');
         pieceDiv.classList.add('pieces');
-        pieceDiv.classList.add('empty');
+        // pieceDiv.classList.add('empty');
         
         // weeds out the edge layer of the board
         if(this.x === 0 || this.y === 0 || this.x === 9 || this.y === 9) {
@@ -110,48 +110,32 @@ class Piece {
         }
 
         // the id's are columns in the grid
-        spaceDiv.id = `R${this.x}C${this.y}Space`;
-        pieceDiv.id = `R${this.x}C${this.y}Piece`;
+        // spaceDiv.id = `R${this.x}C${this.y}Space`;
+        pieceDiv.id = `R${this.x}C${this.y}`;
         
         gridDiv.appendChild(spaceDiv);
         // console.log(spaceDiv.classList.item(1)); // THIS IS IMPORTANT FOR ANOTHER IDEA  
     }
 
     placePiece() { //could use evt if needed for something, but what??
+        console.log("new piece being placed");
 
         // isValidSpace(this.id);
         
+        // need to make this alternate every other turn.....that's a later problem
+        // for now, use black
+        this.classList.add('black');
+        // console.log(this.classList.contains('black'));
+
         // grab center element's x and y indicies. right-left, top-bottom. 5 is center, AKA the piece being placed
         const x_center = grabSecondCharAsNumber(this.id);
         const y_center = grabFourthCharAsNumber(this.id);
 
-        // const x_neighborDirections = [ 0,
-        //     x_center - 1,   // neigbor 1
-        //     x_center - 1,   // neigbor 2
-        //     x_center - 1,   // neigbor 3
-        //     x_center,       // neigbor 4
-        //     x_center,       // neigbor 5 = SELF
-        //     x_center,       // neigbor 6
-        //     x_center + 1,   // neigbor 7
-        //     x_center + 1,   // neigbor 8
-        //     x_center + 1,   // neigbor 9
-        // ]
-
-        // const y_neighborDirections = [ 0,
-        //     y_center - 1,   // neigbor 1
-        //     y_center,       // neigbor 2
-        //     y_center + 1,   // neigbor 3
-        //     y_center - 1,   // neigbor 4
-        //     y_center,       // neigbor 5 = SELF
-        //     y_center + 1,   // neigbor 6
-        //     y_center - 1,   // neigbor 7
-        //     y_center,       // neigbor 8
-        //     y_center + 1,   // neigbor 9
-        // ]
-
+        // for each neighbor, 
         for(let i = 1; i <= 9; i++) {
             if(i !== 5) {
-                checkDirection(x_center + x_neighborDirections[i],y_center + y_neighborDirections[i]);
+                console.log('NEW NEIGHBOR BEING CHECKED')
+                checkDirection(i, x_center + x_neighborDirections[i], y_center + y_neighborDirections[i]);
             }
         }
     }
@@ -163,6 +147,7 @@ class Piece {
     // becomeBlack() {}
 
     // becomeWhite() {}
+
 }
 // END Piece Class
 // ==============================================================================================================
@@ -178,12 +163,17 @@ class Piece {
     //     // console.log(center.id);
     // }
 
-const checkDirection = (xDir, yDir) =>{
-    const neighbor = document.getElementById(`R${xDir}C${yDir}Piece`);
-
-    if(neighbor) {
+const checkDirection = (indexDir, xDir, yDir) =>{
+    const neighbor = document.getElementById(`R${xDir}C${yDir}`);
+    if(isPiece(neighbor)) { // neighbor && (neighbor.classList.contains('black') || neighbor.classList.contains('white'))) {      // if not null 
         console.log(neighbor.id);
-        // checkDirection
+        checkDirection(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir]);
+    }
+}
+
+const isPiece = (location) => {
+    if(location && (location.classList.contains('black') || location.classList.contains('white'))) {      // if not null 
+        return true;
     }
 }
 
@@ -197,6 +187,7 @@ const grabFourthCharAsNumber = (str) => {
 const board = new Board();
 board.createGrid();
 board.setUpStart();
+
 
 // player tries to make a move
     // isValidMove()
