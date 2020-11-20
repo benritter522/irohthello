@@ -7,8 +7,8 @@
 // player 1 readout
 // player 2 readout
 
-let player1Turn = true;
-let player2Turn = false;
+let player1 = true; //black plays first
+let player2 = false;
 
 // ==============================================================================================================
 // START Declare neighbor direction arrays. Left-right, top-bottom.
@@ -122,16 +122,23 @@ class Piece {
 
         // isValidSpace(this.id);
         
-        // need to make this alternate every other turn.....that's a later problem
-        // for now, use black
-        this.classList.add('black');
+        // need to make this alternate every other turn.....that's a later problem for now, use black
+        if(player1) {
+            this.classList.add('black');
+            player1 = false;
+            player2 = true;
+        } else if(player2) {
+            this.classList.add('white');
+            player2 = false;
+            player1 = true;
+        }
         // console.log(this.classList.contains('black'));
 
         // grab center element's x and y indicies. right-left, top-bottom. 5 is center, AKA the piece being placed
         const x_center = grabSecondCharAsNumber(this.id);
         const y_center = grabFourthCharAsNumber(this.id);
 
-        // for each neighbor, 
+        // for each neighbor
         for(let i = 1; i <= 9; i++) {
             if(i !== 5) {
                 console.log('NEW NEIGHBOR BEING CHECKED')
