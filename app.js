@@ -12,6 +12,8 @@ let player2 = false;
 let player1Turn = false;
 let player2Turn = false;
 
+let canPlace = false;
+
 // ==============================================================================================================
 // START Declare neighbor direction arrays. Left-right, top-bottom.
 
@@ -109,10 +111,15 @@ class Piece {
 
                 if(this.x === 0 && this.y !== 9) {
                     spaceDiv.innerText = this.y;
+                    // spaceDiv.style.borderBottom = "1px solid black";
                 } else if (this.y === 0 && this.x !== 9) {
                     spaceDiv.innerText = this.x;
-                }
-            }
+                    // spaceDiv.style.borderRight = "1px solid black";
+                } 
+                // else if(this.x === 1 && this.y !== 0 && this.y !== 9) {
+                //     spaceDiv.style.borderTop = "1px solid black";
+                // }
+            } 
             // spaceDiv.innerText = `${this.x},${this.y}`;
         } else {
             // if piece is not an edge space, adds a piece with an event listener
