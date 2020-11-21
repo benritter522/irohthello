@@ -9,6 +9,8 @@
 
 let player1 = true; //black plays first
 let player2 = false;
+let player1Turn = false;
+let player2Turn = false;
 
 // ==============================================================================================================
 // START Declare neighbor direction arrays. Left-right, top-bottom.
@@ -102,6 +104,7 @@ class Piece {
         // weeds out the edge layer of the board
         if(this.x === 0 || this.y === 0 || this.x === 9 || this.y === 9) {
             spaceDiv.classList.add('edgeSpaces'); 
+            spaceDiv.innerText = `${this.x},${this.y}`;
         } else {
             // if piece is not an edge space, adds a piece with an event listener
             spaceDiv.classList.add('gameSpaces'); 
@@ -117,32 +120,54 @@ class Piece {
         // console.log(spaceDiv.classList.item(1)); // THIS IS IMPORTANT FOR ANOTHER IDEA  
     }
 
-    placePiece() { //could use evt if needed for something, but what??
-        console.log("new piece being placed");
-
-        // isValidSpace(this.id);
+    placePiece() { 
         
-        // need to make this alternate every other turn.....that's a later problem for now, use black
-        if(player1) {
-            this.classList.add('black');
-            player1 = false;
-            player2 = true;
-        } else if(player2) {
-            this.classList.add('white');
-            player2 = false;
-            player1 = true;
+        // if using 'e' MUST USE .TARGET BEFORE DOING STUFF!!!!!!!!
+        // console.log(e.target);
+        
+        if(this.classList.contains('black') || this.classList.contains('white')) {
+            alert('Please select an empty space for a valid move.')
         }
-        // console.log(this.classList.contains('black'));
+        else {
+            // console.log("new piece being placed");
+                        
+            // need to make this alternate every other turn.....that's a later problem for now, use black
+            if(player1) {
+                this.classList.add('black');
+                player1 = false;
+                player2 = true;
+                player1Turn = true;
+                console.log('player 2\'s turn. play a white piece');
 
-        // grab center element's x and y indicies. right-left, top-bottom. 5 is center, AKA the piece being placed
-        const x_center = grabSecondCharAsNumber(this.id);
-        const y_center = grabFourthCharAsNumber(this.id);
+            } else if(player2) {
+                this.classList.add('white');
+                player1 = true;
+                player2 = false;
+                player2Turn = true;
+                console.log('player 1\'s turn. play a black piece');
+            }
+            // console.log(this.classList.contains('black'));
+            
+            // grab center element's x and y indicies. right-left, top-bottom. 5 is center, AKA the piece being placed
+            const x_center = grabSecondCharAsNumber(this.id);
+            const y_center = grabFourthCharAsNumber(this.id);
+            
+            // for each neighbor
+            console.log(this.id + " played");
+            for(let i = 1; i <= 9; i++) {
+                if(i !== 5) {
+                    // console.log('neighbor ' + i);
+                    const arr = [];
+                    checkDirection(i, x_center + x_neighborDirections[i], y_center + y_neighborDirections[i], arr);
+                    // console.log(arr);
+                }
+            }
 
-        // for each neighbor
-        for(let i = 1; i <= 9; i++) {
-            if(i !== 5) {
-                console.log('NEW NEIGHBOR BEING CHECKED')
-                checkDirection(i, x_center + x_neighborDirections[i], y_center + y_neighborDirections[i]);
+            if(player1Turn) {
+                player1Turn = false;
+            } 
+            if (player2Turn) {
+                player2Turn = false;
             }
         }
     }
@@ -170,13 +195,43 @@ class Piece {
     //     // console.log(center.id);
     // }
 
-const checkDirection = (indexDir, xDir, yDir) =>{
+let neighborCount = 0;
+
+const checkDirection = (indexDir, xDir, yDir, arr) =>{
+
     const neighbor = document.getElementById(`R${xDir}C${yDir}`);
+
     if(isPiece(neighbor)) { // neighbor && (neighbor.classList.contains('black') || neighbor.classList.contains('white'))) {      // if not null 
-        console.log(neighbor.id);
-        checkDirection(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir]);
-    }
+        if(player1Turn && neighbor.classList.contains('white')) {   // need to instill requirement for second boundary piece. maybe a return true if it's found?
+                                                                    // should I make a globally scoped counter that I reset to 0 every iteration just to be able to determine if that's 
+                                                                    // the first neighbor being checked? then if count > 1 or something?? might work!!
+            arr.push(neighbor.id);
+            // console.log(neighbor.id);
+            // console.log(arr);
+            checkDirection(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
+        } else if (player2Turn && neighbor.classList.contains('black')) {
+            arr.push(neighbor.id);
+            // console.log(neighbor.id);
+            // console.log(arr);
+            checkDirection(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
+        } else if (arr.length > 0){
+            console.log(`${arr} flipped \nin checkDirection`);
+            flipSandwhichMeats(arr);
+            return arr;
+        }
+    } 
+    // else {
+    //     alert(`Please make a valid move`);
+    // }
 }
+
+const flipSandwhichMeats = (arr) => {
+    arr.forEach(element => {
+        document.getElementById(element).classList.toggle('black');
+        document.getElementById(element).classList.toggle('white');
+    });
+}
+
 
 const isPiece = (location) => {
     if(location && (location.classList.contains('black') || location.classList.contains('white'))) {      // if not null 
