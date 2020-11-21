@@ -9,9 +9,24 @@ body {
     background-color: saddlebrown;
     /* background-color: sienna; */
     font-family: fantasy;
-
 }
-
+article {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+ul {
+    font-size: 25px;
+    justify-content: left;
+    list-style-type: none;;
+}
+.scores {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    min-width: 100px;
+    font-size: 30px;
+}
 .board {
     /* JUST HAD AN IDEA. MAKE THE BOARD REALLY WIDE AND 
     TURN THE BOARD INTO A SEATING AREA FOR
@@ -19,7 +34,7 @@ body {
     .GRID IS ENOUGH TO BE THE BOARD ON ITS OWN */
     position: absolute;
     top: 10%;
-    left: 20%;
+    left: 25%;
     background-color: grey;
     /* width: 80%;
     height: 60%; */

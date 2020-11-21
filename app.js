@@ -14,6 +14,9 @@ let player2Turn = false;
 
 let canPlace = false;
 
+let blackCount = 0;
+let whiteCount = 0;
+
 // ==============================================================================================================
 // START Declare neighbor direction arrays. Left-right, top-bottom.
 
@@ -61,7 +64,7 @@ class Board {
         }
     }
     setUpStart() {      // set up the 4 starting pieces
-        
+
         const starterWhitePieces = [
             document.getElementById('R4C4'),
             document.getElementById('R5C5')
@@ -74,11 +77,15 @@ class Board {
 
         starterBlackPieces.forEach(element => {
             element.classList.add('black');
+            blackCount ++;
         });
 
         starterWhitePieces.forEach(element => {
             element.classList.add('white');
+            whiteCount ++;
         });
+        updatePieceCounters();            
+
     }
 }
 // END Board Class
@@ -150,6 +157,7 @@ class Piece {
             // need to make this alternate every other turn.....that's a later problem for now, use black
             if(player1) {
                 this.classList.add('black');
+                blackCount ++;
                 player1 = false;
                 player2 = true;
                 player1Turn = true;
@@ -157,6 +165,7 @@ class Piece {
 
             } else if(player2) {
                 this.classList.add('white');
+                whiteCount ++;
                 player1 = true;
                 player2 = false;
                 player2Turn = true;
@@ -185,6 +194,7 @@ class Piece {
             if (player2Turn) {
                 player2Turn = false;
             }
+            updatePieceCounters();            
         }
     }
 
@@ -245,14 +255,25 @@ const flipSandwhichMeats = (arr) => {
     arr.forEach(element => {
         document.getElementById(element).classList.toggle('black');
         document.getElementById(element).classList.toggle('white');
+        if(player1Turn) {
+            blackCount ++;
+            whiteCount --;
+        } else if (player2Turn) {
+            whiteCount ++;
+            blackCount --;
+        }
     });
 }
-
 
 const isPiece = (location) => {
     if(location && (location.classList.contains('black') || location.classList.contains('white'))) {      // if not null 
         return true;
     }
+}
+
+const updatePieceCounters = () => {
+    document.getElementById('whiteCount').innerText = whiteCount;
+    document.getElementById('blackCount').innerText = blackCount; 
 }
 
 const grabSecondCharAsNumber = (str) => {
