@@ -60,7 +60,8 @@ body {
 .edgeSpaces {
     background-color: darkgreen;
     border-radius: 10px;
-
+    font-family: fantasy;
+    font-size: 30px;
     /* display: none; */
     /* can choose later to reformat based on 8x8 grid with "display-none" for the edge spaces. */
     /* for now that's not worth the effort...maybe never. */

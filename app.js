@@ -104,7 +104,16 @@ class Piece {
         // weeds out the edge layer of the board
         if(this.x === 0 || this.y === 0 || this.x === 9 || this.y === 9) {
             spaceDiv.classList.add('edgeSpaces'); 
-            spaceDiv.innerText = `${this.x},${this.y}`;
+
+            if(!(this.x === 0 && this.y === 0)) {
+
+                if(this.x === 0 && this.y !== 9) {
+                    spaceDiv.innerText = this.y;
+                } else if (this.y === 0 && this.x !== 9) {
+                    spaceDiv.innerText = this.x;
+                }
+            }
+            // spaceDiv.innerText = `${this.x},${this.y}`;
         } else {
             // if piece is not an edge space, adds a piece with an event listener
             spaceDiv.classList.add('gameSpaces'); 
