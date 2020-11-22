@@ -9,14 +9,15 @@
 
 let player1 = true; //black plays first
 
-// let player2 = false;
-// let player1Turn = false;
-// let player2Turn = false;
+let player1CanMove = true;
+let player2CanMove = true;
 
 let canPlace = false;
 
 let blackCount = 0;
 let whiteCount = 0;
+
+
 
 // ==============================================================================================================
 // START Declare neighbor direction arrays. Left-right, top-bottom.
@@ -142,57 +143,61 @@ class Piece {
         
         // if using 'e' MUST USE .TARGET BEFORE DOING STUFF!!!!!!!!
         // console.log(e.target);
-        
-        if(this.classList.contains('black') || this.classList.contains('white')) {
-            invalidMoveAlert();
-            // canPlace = false;
-        }
-        else {
-            // console.log("new piece being placed");
-                        
-            // need to make this alternate every other turn.....that's a later problem for now, use black
-            if(player1) {
-                this.classList.add('black'); 
+        if(player1CanMove || player2CanMove) {
 
-            } else { 
-                this.classList.add('white'); // if invalid space, must do this.classList.remove('white') later
-            }
-            
-            // grab center element's x and y indicies. right-left, top-bottom. 5 is center, AKA the piece being placed
-            const x_center = grabSecondCharAsNumber(this.id);
-            const y_center = grabFourthCharAsNumber(this.id);
-            
-            // for each neighbor
-            console.log(this.id + " played");
-            for(let i = 1; i <= 9; i++) {
-                if(i !== 5) {
-                    // console.log('neighbor ' + i);
-                    const arr = [];
-                    checkDirection(i, x_center + x_neighborDirections[i], y_center + y_neighborDirections[i], arr);
-                    // console.log(arr);
-                }
-            }
-
-            if(canPlace) {
-                document.querySelector('.whatsPlayed').innerText = `${this.id} was played.`;
-
-                if(player1) {
-                    player1 = false;
-                    blackCount ++;
-                    document.querySelector('.whosTurn').innerText = 'It\'s player 2\'s turn. \nPlay a white piece.';
-                } 
-                else { 
-                    player1 = true;
-                    whiteCount ++;
-                    document.querySelector('.whosTurn').innerText = 'It\'s player 1\'s turn. \nPlay a black piece.';
-                }
-                canPlace = false;
-            } else {
+            if(this.classList.contains('black') || this.classList.contains('white')) {
                 invalidMoveAlert();
-                this.classList.remove('black');
-                this.classList.remove('white');
+                // canPlace = false;
             }
-            updatePieceCounters();            
+            else {
+                // console.log("new piece being placed");
+                
+                // need to make this alternate every other turn.....that's a later problem for now, use black
+                if(player1) {
+                    this.classList.add('black'); 
+                    
+                } else { 
+                    this.classList.add('white'); // if invalid space, must do this.classList.remove('white') later
+                }
+                
+                // grab center element's x and y indicies. right-left, top-bottom. 5 is center, AKA the piece being placed
+                const x_center = grabSecondCharAsNumber(this.id);
+                const y_center = grabFourthCharAsNumber(this.id);
+                
+                // for each neighbor
+                console.log(this.id + " played");
+                for(let i = 1; i <= 9; i++) {
+                    if(i !== 5) {
+                        // console.log('neighbor ' + i);
+                        const arr = [];
+                        checkDirection(i, x_center + x_neighborDirections[i], y_center + y_neighborDirections[i], arr);
+                        // console.log(arr);
+                    }
+                }
+                
+                if(canPlace) {
+                    document.querySelector('.whatsPlayed').innerText = `${this.id} was played.`;
+                    
+                    if(player1) {
+                        player1 = false;
+                        blackCount ++;
+                        document.querySelector('.whosTurn').innerText = 'It\'s player 2\'s turn. \nPlay a white piece.';
+                    } 
+                    else { 
+                        player1 = true;
+                        whiteCount ++;
+                        document.querySelector('.whosTurn').innerText = 'It\'s player 1\'s turn. \nPlay a black piece.';
+                    }
+                    canPlace = false;
+                } else {
+                    invalidMoveAlert();
+                    this.classList.remove('black');
+                    this.classList.remove('white');
+                }
+                updatePieceCounters();            
+            }
+        } else {
+            gameOver();
         }
     }
 
@@ -221,7 +226,6 @@ class Piece {
     // }
 
 const checkDirection = (indexDir, xDir, yDir, arr) =>{
-
     const neighbor = document.getElementById(`R${xDir}C${yDir}`);
 
     if(isPiece(neighbor)) {
@@ -261,6 +265,16 @@ const flipSandwhichMeats = (arr) => {
 const isPiece = (location) => {
     if(location && (location.classList.contains('black') || location.classList.contains('white'))) {      // if not null 
         return true;
+    }
+}
+
+const gameOver = () => {
+    if(blackCount > whiteCount) {
+        alert(`Game over! Player 1 wins with ${blackCount} black pieces!`)
+    } else if (whiteCount > blackCount) {
+        alert(`Game over! Player 2 wins with ${whiteCount} white pieces!`)
+    } else {
+        alert(`Game over! It's a tie!`)
     }
 }
 
