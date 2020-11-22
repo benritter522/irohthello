@@ -8,6 +8,7 @@
 // player 2 readout
 
 let player1 = true; //black plays first
+
 // let player2 = false;
 // let player1Turn = false;
 // let player2Turn = false;
@@ -256,7 +257,7 @@ const flipSandwhichMeats = (arr) => {
         if(player1) {
             blackCount ++;
             whiteCount --;
-        // } else { //if (player2) {
+        } else { //if (player2) {
             whiteCount ++;
             blackCount --;
         }
