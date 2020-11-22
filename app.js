@@ -146,7 +146,7 @@ class Piece {
         if(player1CanMove || player2CanMove) {
 
             if(this.classList.contains('black') || this.classList.contains('white')) {
-                invalidMoveAlert();
+                // invalidMoveAlert();
                 // canPlace = false;
             }
             else {
@@ -170,7 +170,7 @@ class Piece {
                     if(i !== 5) {
                         // console.log('neighbor ' + i);
                         const arr = [];
-                        checkDirection(i, x_center + x_neighborDirections[i], y_center + y_neighborDirections[i], arr);
+                        checkDirectionMove(i, x_center + x_neighborDirections[i], y_center + y_neighborDirections[i], arr);
                         // console.log(arr);
                     }
                 }
@@ -190,11 +190,12 @@ class Piece {
                     }
                     canPlace = false;
                 } else {
-                    invalidMoveAlert();
+                    // invalidMoveAlert();
                     this.classList.remove('black');
                     this.classList.remove('white');
                 }
-                updatePieceCounters();            
+                updatePieceCounters();    
+                // checkEndCondition();        
             }
         } else {
             gameOver();
@@ -225,7 +226,7 @@ class Piece {
     //     // console.log(center.id);
     // }
 
-const checkDirection = (indexDir, xDir, yDir, arr) =>{
+const checkDirectionMove = (indexDir, xDir, yDir, arr) =>{
     const neighbor = document.getElementById(`R${xDir}C${yDir}`);
 
     if(isPiece(neighbor)) {
@@ -233,12 +234,12 @@ const checkDirection = (indexDir, xDir, yDir, arr) =>{
             arr.push(neighbor.id);
             // console.log(neighbor.id);
             // console.log(arr);
-            checkDirection(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
+            checkDirectionMove(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
         } else if (!player1 && neighbor.classList.contains('black')) {
             arr.push(neighbor.id);
             // console.log(neighbor.id);
             // console.log(arr);
-            checkDirection(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
+            checkDirectionMove(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
         } else if (arr.length > 0 && ((player1 && neighbor.classList.contains('black')) || (!player1 && neighbor.classList.contains('white')))) {
             document.querySelector('.whatFlipped').innerText = `${arr} were flipped.`;
             flipSandwhichMeats(arr);
@@ -267,6 +268,54 @@ const isPiece = (location) => {
         return true;
     }
 }
+
+// const checkDirectionForEnd = (indexDir, xDir, yDir, arr) =>{
+//     const neighbor = document.getElementById(`R${xDir}C${yDir}`);
+
+//     if(isPiece(neighbor)) {
+//         if(player1 && neighbor.classList.contains('white')) {   
+//             arr.push(neighbor.id);
+//             checkDirectionForEnd(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
+//         } else if (!player1 && neighbor.classList.contains('black')) {
+//             arr.push(neighbor.id);
+//             checkDirectionForEnd(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
+//         } else if (arr.length > 0 && (player1 && neighbor.classList.contains('black'))) {
+//             player1CanMove = true;
+//             return arr;
+//         } else if (arr.length > 0 && (!player1 && neighbor.classList.contains('white'))) {
+//             player2CanMove = true;
+//             return arr;
+//         } 
+//     }
+// }
+
+// const checkEndCondition = () => {
+//     player1CanMove = false;
+//     player2CanMove = false;
+//     // need to loop through whole 2D array, elements 1 to 8 at least for just game pieces 
+//     for(let x = 1; x <= 8; x++) {
+//         for(let y = 1; y <= 8; y ++) {
+
+//             pieceDiv = document.getElementById(`R${x}C${y}`);
+            
+//             // const x_center = grabSecondCharAsNumber(pieceDiv.id);
+//             // const y_center = grabFourthCharAsNumber(pieceDiv.id);
+//             if(!pieceDiv.classList.contains('black') && !pieceDiv.classList.contains('white')) {
+//                 for(let i = 1; i <= 9; i++) {
+//                     if(i !== 5) {
+//                         // console.log('neighbor ' + i);
+//                         const arr = [];
+//                         checkDirectionForEnd(i, x + x_neighborDirections[i], y + y_neighborDirections[i], arr);
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//     if((!player1CanMove && !player2CanMove) || (blackCount + whiteCount === 64)) {
+//         gameOver();
+//     }
+
+// }
 
 const gameOver = () => {
     if(blackCount > whiteCount) {
@@ -706,4 +755,3 @@ board.setUpStart();
                 // maybe decided by the current element being checked being the last in the array? this loop
                 // should never get to the end of the board if ANY move is possible bc it returns as soon
                 // as it finds a valid move, so that should be airtight.....hopefully :)
-            
