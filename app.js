@@ -1,28 +1,25 @@
-// black always moves first in othello
-// less experienced player should choose black
+// console.log(spaceDiv.classList.item(1)); 
+// ^^^^THIS PROPERTY WOULD BE USEFUL IF I KNEW WHICH CLASS IS WHERE 
+// IN THE CLASSLIST. USE LATER FOR SOMETHING ELSE BUT NEVER FORGET
 
-// modal
+// still need modal
 
 // set up players 1 and 2
-// player 1 readout
-// player 2 readout
-
-let player1 = true; //black plays first
-
+let player1 = true; // black plays first in othello
+                    // less experienced player should choose black
 let player1CanMove = true;
 let player2CanMove = true;
 
+// global variable to determine if placing a piece is valid in only very niche sandwhicable cases
 let canPlace = false;
 
+// set up global counters to tweak every time as piece is placed or flipped 
 let blackCount = 0;
 let whiteCount = 0;
 
-
-
 // ==============================================================================================================
 // START Declare neighbor direction arrays. Left-right, top-bottom.
-
-const x_neighborDirections = [ 0,
+const x_neighborDirections = [0,
     -1,     // neigbor 1
     -1,     // neigbor 2
     -1,     // neigbor 3
@@ -33,8 +30,7 @@ const x_neighborDirections = [ 0,
     1,      // neigbor 8
     1,      // neigbor 9
 ]
-
-const y_neighborDirections = [ 0,
+const y_neighborDirections = [0,
     -1,     // neigbor 1
     0,      // neigbor 2
     1,      // neigbor 3
@@ -49,6 +45,8 @@ const y_neighborDirections = [ 0,
 // ==============================================================================================================
 
 
+
+
 // ==============================================================================================================
 // ==============================================================================================================
 // START Board Class
@@ -57,7 +55,8 @@ class Board {
     constructor() {
         // this.array2D = [];
     }
-    createGrid() {      // intial board setup as a 2D array of divs
+    createGrid() {      
+        // intial board setup as a 2D array of divs
         for(let x = 0; x < 10; x ++) {
             for(let y = 0; y < 10; y ++) {
                 const piece = new Piece(x, y);
@@ -65,33 +64,48 @@ class Board {
             }
         }
     }
-    setUpStart() {      // set up the 4 starting pieces
-
+    setUpStart() {      
+        // set up the 4 starting pieces
         const starterWhitePieces = [
             document.getElementById('R4C4'),
             document.getElementById('R5C5')
-        ]
-
+        ];
         const starterBlackPieces = [
             document.getElementById('R4C5'),
             document.getElementById('R5C4')
-        ]
-
+        ];
         starterBlackPieces.forEach(element => {
             element.classList.add('black');
             blackCount ++;
         });
-
         starterWhitePieces.forEach(element => {
             element.classList.add('white');
             whiteCount ++;
         });
         updatePieceCounters();            
-
+    }
+    setUpLateGameForDebugging() {
+        for(let x = 2; x < 9; x++) {
+            for(let y = 1; y < 9; y++) {
+                const piece = document.getElementById(`R${x}C${y}`);
+                if(x !== 2) {
+                    piece.classList.add('black');
+                    blackCount ++;
+                } else {
+                    piece.classList.add('white');
+                    whiteCount ++;
+                }
+            }
+        }
+        updatePieceCounters();            
     }
 }
 // END Board Class
 // ==============================================================================================================
+// ==============================================================================================================
+
+
+
 
 
 // ==============================================================================================================
@@ -115,7 +129,6 @@ class Piece {
         // weeds out the edge layer of the board
         if(this.x === 0 || this.y === 0 || this.x === 9 || this.y === 9) {
             spaceDiv.classList.add('edgeSpaces');
-
             if(!(this.x === 0 && this.y === 0)) {
                 if(this.x === 0 && this.y !== 9) {
                     spaceDiv.innerText = this.y;
@@ -123,7 +136,6 @@ class Piece {
                     spaceDiv.innerText = this.x;
                 } 
             } 
-        
         } else {
             // if piece is not an edge space, adds a piece with an event listener
             spaceDiv.classList.add('gameSpaces'); 
@@ -136,7 +148,6 @@ class Piece {
         pieceDiv.id = `R${this.x}C${this.y}`;
         
         gridDiv.appendChild(spaceDiv);
-        // console.log(spaceDiv.classList.item(1)); // THIS IS IMPORTANT FOR ANOTHER IDEA  
     }
 
     placePiece() { 
@@ -168,10 +179,8 @@ class Piece {
                 // console.log(this.id + " played");
                 for(let i = 1; i <= 9; i++) {
                     if(i !== 5) {
-                        // console.log('neighbor ' + i);
                         const arr = [];
                         checkDirectionMove(i, x_center + x_neighborDirections[i], y_center + y_neighborDirections[i], arr);
-                        // console.log(arr);
                     }
                 }
                 
@@ -213,18 +222,28 @@ class Piece {
 }
 // END Piece Class
 // ==============================================================================================================
+// ==============================================================================================================
+
+
 
 
 
 // ==============================================================================================================
-// Functions outside of classes
 // ==============================================================================================================
+// Supporting Functions outside of classes
+// ==============================================================================================================
+// ==============================================================================================================
+
 
     // const isValidSpace = (x,y) => {
     //     console.log("hello world");
     //     // const center = document.getElementById(`R${x}C${y}Piece`);
     //     // console.log(center.id);
     // }
+
+
+// ==============================================================================================================
+// Checks a direction of a neighbor recursively in that direction until end conditions
 
 const checkDirectionMove = (indexDir, xDir, yDir, arr) =>{
     const neighbor = document.getElementById(`R${xDir}C${yDir}`);
@@ -244,6 +263,13 @@ const checkDirectionMove = (indexDir, xDir, yDir, arr) =>{
         }
     } 
 }
+// End checking direction
+// ==============================================================================================================
+
+
+
+// ==============================================================================================================
+// Flip pieces when a sandwich happens AKA a piece is placed
 
 const flipSandwhichMeats = (arr) => {
     arr.forEach(element => {
@@ -258,12 +284,38 @@ const flipSandwhichMeats = (arr) => {
         }
     });
 }
+// End flipping pieces
+// ==============================================================================================================
+
+
 
 const isPiece = (location) => {
     if(location && (location.classList.contains('black') || location.classList.contains('white'))) {      // if not null 
         return true;
     }
 }
+
+const updatePieceCounters = () => {
+    document.getElementById('blackCount').innerText = `Player 1 has ${blackCount} black pieces.`;
+    document.getElementById('whiteCount').innerText = `Player 2 has ${whiteCount} white pieces.`;
+}
+
+const grabSecondCharAsNumber = (str) => {
+    return Number(str[1]);
+}
+const grabFourthCharAsNumber = (str) => {
+    return Number(str[3]);
+}
+
+const invalidMoveAlert = () => {
+    alert('Please select a valid move.');
+}
+
+
+
+// ==============================================================================================================
+// ==============================================================================================================
+// END CONDITION FUNCTIONS
 
 // const checkDirectionForEnd = (indexDir, xDir, yDir, arr) =>{
 //     const neighbor = document.getElementById(`R${xDir}C${yDir}`);
@@ -324,26 +376,21 @@ const gameOver = () => {
     }
 }
 
-const updatePieceCounters = () => {
-    document.getElementById('blackCount').innerText = `Player 1 has ${blackCount} black pieces.`;
-    document.getElementById('whiteCount').innerText = `Player 2 has ${whiteCount} white pieces.`;
-}
+// End End condition
+// ==============================================================================================================
+// ==============================================================================================================
 
-const grabSecondCharAsNumber = (str) => {
-    return Number(str[1]);
-}
-const grabFourthCharAsNumber = (str) => {
-    return Number(str[3]);
-}
 
-const invalidMoveAlert = () => {
-    alert('Please select a valid move.');
 
-}
+
 
 const board = new Board();
 board.createGrid();
-board.setUpStart();
+// board.setUpStart();
+board.setUpLateGameForDebugging();
+
+
+
 
 
 // player tries to make a move
@@ -361,15 +408,6 @@ board.setUpStart();
                 // else
                     //  call checkSingleNeighbor() from this neighbor -- RECURSIONNNN
 
-                    /*  going to need to make conditions for the end boundary 
-                        that's the same value as the placed piece. 
-                        Keep track of 'last piece checked in line' or something */
-
-                    /*  if just one of the directions is valid for the move,
-                        the move is valid. can return when that is true and exit the function*/
-
-    // if move is valid
-        // flip pieces() // check all possible directions, don't stop after one direction is valid. Can sandwich in multiple directions with one move.
 
             
 
