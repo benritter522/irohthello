@@ -13,7 +13,7 @@ let player1 = true; //black plays first
 // let player1Turn = false;
 // let player2Turn = false;
 
-// let canPlace = false;
+let canPlace = false;
 
 let blackCount = 0;
 let whiteCount = 0;
@@ -101,7 +101,7 @@ class Piece {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.canPlace = false;
+        // this.canPlace = false;
     }
     makePieceDiv() { //x, y) {
         const spaceDiv = document.createElement('div');
@@ -161,12 +161,10 @@ class Piece {
             if(player1) {
                 this.classList.add('black'); 
                 blackCount ++;
-                console.log('player 2\'s turn. play a white piece');
 
             } else { //if(player2) {
                 this.classList.add('white'); // if invalid space, must do this.classList.remove('white') later
                 whiteCount ++;
-                console.log('player 1\'s turn. play a black piece');
             }
             // console.log(this.classList.contains('black'));
             
@@ -185,13 +183,24 @@ class Piece {
                 }
             }
 
-            if(player1) {
-                player1 = false;
-                // player2 = true;
-            } 
-            else { //(player2) {
-                // player2 = false;
-                player1 = true;
+            if(canPlace) {
+
+                if(player1) {
+                    player1 = false;
+                    console.log('player 2\'s turn. play a white piece');
+
+                    // player2 = true;
+                } 
+                else { //(player2) {
+                    // player2 = false;
+                    player1 = true;
+                    console.log('player 1\'s turn. play a black piece');
+
+                }
+                canPlace = false;
+            } else {
+                this.classList.remove('black');
+                this.classList.remove('white');
             }
             updatePieceCounters();            
         }
@@ -239,9 +248,10 @@ const checkDirection = (indexDir, xDir, yDir, arr) =>{
             // console.log(neighbor.id);
             // console.log(arr);
             checkDirection(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
-        } else if (arr.length > 0){
+        } else if (arr.length > 0 && ((player1 && neighbor.classList.contains('black')) || (!player1 && neighbor.classList.contains('white')))) {
             console.log(`${arr} flipped \nin checkDirection`);
             flipSandwhichMeats(arr);
+            canPlace = true;
             return arr;
         }
     } 
