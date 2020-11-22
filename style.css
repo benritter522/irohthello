@@ -10,11 +10,6 @@ body {
     background-color: sienna;
     font-family: fantasy;
 }
-article {
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-}
 ul {
     font-size: 25px;
     justify-content: left;
@@ -22,6 +17,11 @@ ul {
 }
 .modalDisplayOff {
     display: none;
+}
+.scoreboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
 }
 .scores {
     display: flex;

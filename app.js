@@ -151,7 +151,7 @@ class Piece {
         // console.log(e.target);
         
         if(this.classList.contains('black') || this.classList.contains('white')) {
-            alert('Please select an empty space for a valid move.')
+            invalidMoveAlert();
             // canPlace = false;
         }
         else {
@@ -199,6 +199,7 @@ class Piece {
                 }
                 canPlace = false;
             } else {
+                invalidMoveAlert();
                 this.classList.remove('black');
                 this.classList.remove('white');
             }
@@ -290,6 +291,11 @@ const grabSecondCharAsNumber = (str) => {
 }
 const grabFourthCharAsNumber = (str) => {
     return Number(str[3]);
+}
+
+const invalidMoveAlert = () => {
+    alert('Please select a valid move.');
+
 }
 
 const board = new Board();
