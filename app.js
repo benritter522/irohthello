@@ -165,7 +165,7 @@ class Piece {
                 const y_center = grabFourthCharAsNumber(this.id);
                 
                 // for each neighbor
-                console.log(this.id + " played");
+                // console.log(this.id + " played");
                 for(let i = 1; i <= 9; i++) {
                     if(i !== 5) {
                         // console.log('neighbor ' + i);
@@ -232,13 +232,9 @@ const checkDirectionMove = (indexDir, xDir, yDir, arr) =>{
     if(isPiece(neighbor)) {
         if(player1 && neighbor.classList.contains('white')) {   
             arr.push(neighbor.id);
-            // console.log(neighbor.id);
-            // console.log(arr);
             checkDirectionMove(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
         } else if (!player1 && neighbor.classList.contains('black')) {
             arr.push(neighbor.id);
-            // console.log(neighbor.id);
-            // console.log(arr);
             checkDirectionMove(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
         } else if (arr.length > 0 && ((player1 && neighbor.classList.contains('black')) || (!player1 && neighbor.classList.contains('white')))) {
             document.querySelector('.whatFlipped').innerText = `${arr} were flipped.`;
@@ -272,17 +268,19 @@ const isPiece = (location) => {
 // const checkDirectionForEnd = (indexDir, xDir, yDir, arr) =>{
 //     const neighbor = document.getElementById(`R${xDir}C${yDir}`);
 
-//     if(isPiece(neighbor)) {
+//     if(isPiece(neighbor)) { // the player1 and player2 stuff are the problem here. this search needs to be more general
 //         if(player1 && neighbor.classList.contains('white')) {   
 //             arr.push(neighbor.id);
 //             checkDirectionForEnd(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
 //         } else if (!player1 && neighbor.classList.contains('black')) {
 //             arr.push(neighbor.id);
 //             checkDirectionForEnd(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
-//         } else if (arr.length > 0 && (player1 && neighbor.classList.contains('black'))) {
+//         } 
+//         if (arr.length > 0 && (neighbor.classList.contains('black'))) {
 //             player1CanMove = true;
 //             return arr;
-//         } else if (arr.length > 0 && (!player1 && neighbor.classList.contains('white'))) {
+//         }
+//         if (arr.length > 0 && (neighbor.classList.contains('white'))) {
 //             player2CanMove = true;
 //             return arr;
 //         } 
@@ -314,7 +312,6 @@ const isPiece = (location) => {
 //     if((!player1CanMove && !player2CanMove) || (blackCount + whiteCount === 64)) {
 //         gameOver();
 //     }
-
 // }
 
 const gameOver = () => {
