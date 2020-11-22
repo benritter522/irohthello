@@ -101,9 +101,8 @@ class Piece {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        // this.canPlace = false;
     }
-    makePieceDiv() { //x, y) {
+    makePieceDiv() { 
         const spaceDiv = document.createElement('div');
         const pieceDiv = document.createElement('div');
         const gridDiv = document.querySelector('.grid');
@@ -114,22 +113,16 @@ class Piece {
         
         // weeds out the edge layer of the board
         if(this.x === 0 || this.y === 0 || this.x === 9 || this.y === 9) {
-            spaceDiv.classList.add('edgeSpaces'); 
+            spaceDiv.classList.add('edgeSpaces');
 
             if(!(this.x === 0 && this.y === 0)) {
-
                 if(this.x === 0 && this.y !== 9) {
                     spaceDiv.innerText = this.y;
-                    // spaceDiv.style.borderBottom = "1px solid black";
                 } else if (this.y === 0 && this.x !== 9) {
                     spaceDiv.innerText = this.x;
-                    // spaceDiv.style.borderRight = "1px solid black";
                 } 
-                // else if(this.x === 1 && this.y !== 0 && this.y !== 9) {
-                //     spaceDiv.style.borderTop = "1px solid black";
-                // }
             } 
-            // spaceDiv.innerText = `${this.x},${this.y}`;
+        
         } else {
             // if piece is not an edge space, adds a piece with an event listener
             spaceDiv.classList.add('gameSpaces'); 
@@ -138,7 +131,7 @@ class Piece {
         }
 
         // the id's are columns in the grid
-        // spaceDiv.id = `R${this.x}C${this.y}Space`;
+        spaceDiv.id = `R${this.x}C${this.y}Space`;
         pieceDiv.id = `R${this.x}C${this.y}`;
         
         gridDiv.appendChild(spaceDiv);
@@ -160,13 +153,10 @@ class Piece {
             // need to make this alternate every other turn.....that's a later problem for now, use black
             if(player1) {
                 this.classList.add('black'); 
-                blackCount ++;
 
-            } else { //if(player2) {
+            } else { 
                 this.classList.add('white'); // if invalid space, must do this.classList.remove('white') later
-                whiteCount ++;
             }
-            // console.log(this.classList.contains('black'));
             
             // grab center element's x and y indicies. right-left, top-bottom. 5 is center, AKA the piece being placed
             const x_center = grabSecondCharAsNumber(this.id);
@@ -184,18 +174,17 @@ class Piece {
             }
 
             if(canPlace) {
+                document.querySelector('.whatsPlayed').innerText = `${this.id} was played.`;
 
                 if(player1) {
                     player1 = false;
-                    console.log('player 2\'s turn. play a white piece');
-
-                    // player2 = true;
+                    blackCount ++;
+                    document.querySelector('.whosTurn').innerText = 'It\'s player 2\'s turn. \nPlay a white piece.';
                 } 
-                else { //(player2) {
-                    // player2 = false;
+                else { 
                     player1 = true;
-                    console.log('player 1\'s turn. play a black piece');
-
+                    whiteCount ++;
+                    document.querySelector('.whosTurn').innerText = 'It\'s player 1\'s turn. \nPlay a black piece.';
                 }
                 canPlace = false;
             } else {
@@ -224,22 +213,19 @@ class Piece {
 // ==============================================================================================================
 // Functions outside of classes
 // ==============================================================================================================
+
     // const isValidSpace = (x,y) => {
     //     console.log("hello world");
     //     // const center = document.getElementById(`R${x}C${y}Piece`);
     //     // console.log(center.id);
     // }
 
-let neighborCount = 0;
-
 const checkDirection = (indexDir, xDir, yDir, arr) =>{
 
     const neighbor = document.getElementById(`R${xDir}C${yDir}`);
 
-    if(isPiece(neighbor)) { // neighbor && (neighbor.classList.contains('black') || neighbor.classList.contains('white'))) {      // if not null 
-        if(player1 && neighbor.classList.contains('white')) {   // need to instill requirement for second boundary piece. maybe a return true if it's found?
-                                                                    // should I make a globally scoped counter that I reset to 0 every iteration just to be able to determine if that's 
-                                                                    // the first neighbor being checked? then if count > 1 or something?? might work!!
+    if(isPiece(neighbor)) {
+        if(player1 && neighbor.classList.contains('white')) {   
             arr.push(neighbor.id);
             // console.log(neighbor.id);
             // console.log(arr);
@@ -250,15 +236,12 @@ const checkDirection = (indexDir, xDir, yDir, arr) =>{
             // console.log(arr);
             checkDirection(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
         } else if (arr.length > 0 && ((player1 && neighbor.classList.contains('black')) || (!player1 && neighbor.classList.contains('white')))) {
-            console.log(`${arr} flipped \nin checkDirection`);
+            document.querySelector('.whatFlipped').innerText = `${arr} were flipped.`;
             flipSandwhichMeats(arr);
             canPlace = true;
             return arr;
         }
     } 
-    // else {
-    //     alert(`Please make a valid move`);
-    // }
 }
 
 const flipSandwhichMeats = (arr) => {
@@ -268,7 +251,7 @@ const flipSandwhichMeats = (arr) => {
         if(player1) {
             blackCount ++;
             whiteCount --;
-        } else { //if (player2) {
+        } else { 
             whiteCount ++;
             blackCount --;
         }
@@ -282,8 +265,8 @@ const isPiece = (location) => {
 }
 
 const updatePieceCounters = () => {
-    document.getElementById('whiteCount').innerText = whiteCount;
-    document.getElementById('blackCount').innerText = blackCount; 
+    document.getElementById('blackCount').innerText = `Player 1 has ${blackCount} black pieces.`;
+    document.getElementById('whiteCount').innerText = `Player 2 has ${whiteCount} white pieces.`;
 }
 
 const grabSecondCharAsNumber = (str) => {
