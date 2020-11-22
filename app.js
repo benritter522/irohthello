@@ -8,11 +8,11 @@
 // player 2 readout
 
 let player1 = true; //black plays first
-let player2 = false;
-let player1Turn = false;
-let player2Turn = false;
+// let player2 = false;
+// let player1Turn = false;
+// let player2Turn = false;
 
-let canPlace = false;
+// let canPlace = false;
 
 let blackCount = 0;
 let whiteCount = 0;
@@ -100,6 +100,7 @@ class Piece {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+        this.canPlace = false;
     }
     makePieceDiv() { //x, y) {
         const spaceDiv = document.createElement('div');
@@ -150,25 +151,20 @@ class Piece {
         
         if(this.classList.contains('black') || this.classList.contains('white')) {
             alert('Please select an empty space for a valid move.')
+            // canPlace = false;
         }
         else {
             // console.log("new piece being placed");
                         
             // need to make this alternate every other turn.....that's a later problem for now, use black
             if(player1) {
-                this.classList.add('black');
+                this.classList.add('black'); 
                 blackCount ++;
-                player1 = false;
-                player2 = true;
-                player1Turn = true;
                 console.log('player 2\'s turn. play a white piece');
 
-            } else if(player2) {
-                this.classList.add('white');
+            } else { //if(player2) {
+                this.classList.add('white'); // if invalid space, must do this.classList.remove('white') later
                 whiteCount ++;
-                player1 = true;
-                player2 = false;
-                player2Turn = true;
                 console.log('player 1\'s turn. play a black piece');
             }
             // console.log(this.classList.contains('black'));
@@ -188,11 +184,13 @@ class Piece {
                 }
             }
 
-            if(player1Turn) {
-                player1Turn = false;
+            if(player1) {
+                player1 = false;
+                // player2 = true;
             } 
-            if (player2Turn) {
-                player2Turn = false;
+            else { //(player2) {
+                // player2 = false;
+                player1 = true;
             }
             updatePieceCounters();            
         }
@@ -228,14 +226,14 @@ const checkDirection = (indexDir, xDir, yDir, arr) =>{
     const neighbor = document.getElementById(`R${xDir}C${yDir}`);
 
     if(isPiece(neighbor)) { // neighbor && (neighbor.classList.contains('black') || neighbor.classList.contains('white'))) {      // if not null 
-        if(player1Turn && neighbor.classList.contains('white')) {   // need to instill requirement for second boundary piece. maybe a return true if it's found?
+        if(player1 && neighbor.classList.contains('white')) {   // need to instill requirement for second boundary piece. maybe a return true if it's found?
                                                                     // should I make a globally scoped counter that I reset to 0 every iteration just to be able to determine if that's 
                                                                     // the first neighbor being checked? then if count > 1 or something?? might work!!
             arr.push(neighbor.id);
             // console.log(neighbor.id);
             // console.log(arr);
             checkDirection(indexDir, xDir + x_neighborDirections[indexDir], yDir + y_neighborDirections[indexDir], arr);
-        } else if (player2Turn && neighbor.classList.contains('black')) {
+        } else if (!player1 && neighbor.classList.contains('black')) {
             arr.push(neighbor.id);
             // console.log(neighbor.id);
             // console.log(arr);
@@ -255,10 +253,10 @@ const flipSandwhichMeats = (arr) => {
     arr.forEach(element => {
         document.getElementById(element).classList.toggle('black');
         document.getElementById(element).classList.toggle('white');
-        if(player1Turn) {
+        if(player1) {
             blackCount ++;
             whiteCount --;
-        } else if (player2Turn) {
+        // } else { //if (player2) {
             whiteCount ++;
             blackCount --;
         }

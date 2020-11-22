@@ -6,8 +6,8 @@
 }
 body {
     /* background-color: darkolivegreen; */
-    background-color: saddlebrown;
-    /* background-color: sienna; */
+    /* background-color: saddlebrown; */
+    background-color: sienna;
     font-family: fantasy;
 }
 article {
@@ -19,6 +19,9 @@ ul {
     font-size: 25px;
     justify-content: left;
     list-style-type: none;;
+}
+.modalDisplayOff {
+    display: none;
 }
 .scores {
     display: flex;
@@ -34,7 +37,7 @@ ul {
     .GRID IS ENOUGH TO BE THE BOARD ON ITS OWN */
     position: absolute;
     top: 10%;
-    left: 25%;
+    left: 30%;
     background-color: grey;
     /* width: 80%;
     height: 60%; */
@@ -112,4 +115,5 @@ ul {
     border-right: 1px solid white;
     border-bottom: 1px solid white;
 }
+
 
