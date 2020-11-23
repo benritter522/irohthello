@@ -8,7 +8,6 @@
 let player1 = true; // black plays first in othello
                     // less experienced player should choose black
 
-
 let player1CanMove = true; // maybe put these lines inside of
 let player2CanMove = true; // my start game setup method?
 
@@ -19,8 +18,10 @@ let canPlace = false;
 let blackCount = 0;
 let whiteCount = 0;
 
+
 // ==============================================================================================================
 // START Declare neighbor direction arrays. Left-right, top-bottom.
+
 const x_neighborDirections = [0,
     -1,     // neigbor 1
     -1,     // neigbor 2
@@ -31,7 +32,8 @@ const x_neighborDirections = [0,
     1,      // neigbor 7
     1,      // neigbor 8
     1,      // neigbor 9
-]
+];
+
 const y_neighborDirections = [0,
     -1,     // neigbor 1
     0,      // neigbor 2
@@ -42,7 +44,8 @@ const y_neighborDirections = [0,
     -1,     // neigbor 7
     0,      // neigbor 8
     1,      // neigbor 9
-]
+];
+
 // END Declare neighbor direction arrays
 // ==============================================================================================================
 
@@ -61,7 +64,7 @@ class Board {
         for(let x = 0; x < 10; x ++) {
             for(let y = 0; y < 10; y ++) {
                 const piece = new Piece(x, y);
-                piece.makePieceDiv();
+                piece.makePiece();
             }
         }
     }
@@ -125,7 +128,7 @@ class Piece {
         this.x = x;
         this.y = y;
     }
-    makePieceDiv() { 
+    makePiece() { 
         const space = document.createElement('div');
         const piece = document.createElement('div');
         const grid = document.querySelector('.grid');
@@ -159,10 +162,6 @@ class Piece {
     }
     
     placePiece() { 
-        // console.clear();
-        // if using 'e' MUST USE .TARGET BEFORE DOING STUFF!!!!!!!!
-        // console.log(e.target);
-        // if(player1CanMove || player2CanMove) { // this should actually happen at the end of the turn, not when a new click is done
         
         if(!isPiece(document.getElementById(this.id))) {
             if(player1) {
@@ -217,19 +216,12 @@ class Piece {
             }     
         }
     }
-
-    // checkNeighbors() {}
-
-    // flipSandwhichMeats(){}
-
-    // becomeBlack() {}
-
-    // becomeWhite() {}
-
 }
 // END Piece Class
 // ==============================================================================================================
 // ==============================================================================================================
+
+
 
 
 // ==============================================================================================================
@@ -238,12 +230,6 @@ class Piece {
 // ==============================================================================================================
 // ==============================================================================================================
 
-
-    // const isValidSpace = (x,y) => {
-    //     console.log("hello world");
-    //     // const center = document.getElementById(`R${x}C${y}Piece`);
-    //     // console.log(center.id);
-    // }
 
 
 // ==============================================================================================================
@@ -267,10 +253,12 @@ const checkDirectionMove = (indexDir, xDir, yDir, arr) =>{
         }
     } 
 }
+
 // End checking direction
 // ==============================================================================================================
 
-// ==============================================================================================================
+
+
 
 // ==============================================================================================================
 // Flip pieces when a sandwich happens AKA a piece is placed
@@ -288,6 +276,7 @@ const flipSandwhichMeats = (arr) => {
         }
     });
 }
+
 // End flipping pieces
 // ==============================================================================================================
 
@@ -323,19 +312,11 @@ const checkEndCondition = () => {
     // need to loop through whole 2D array, elements 1 to 8 at least for just game pieces 
     for(let x = 1; x <= 8; x++) {
         for(let y = 1; y <= 8; y ++) {
-
             piece = document.getElementById(`R${x}C${y}`);
 
-            // const x_center = grabSecondCharAsNumber(pieceDiv.id);
-            // const y_center = grabFourthCharAsNumber(pieceDiv.id);
-
-            // if I run this if statement TWICE maybe this would help. then I could, for each run, assign a temporary white
-            // class to the piece I'm examining, and then do the same with a temporary black class. THOUGTHTS????
-
-            if(!isPiece(piece)) {//!piece.classList.contains('black') && !piece.classList.contains('white')) {
-
+            if(!isPiece(piece)) {
                 piece.classList.add('black');
-                console.log(`checking end conditions for player1 on ${piece.id}`);
+                // console.log(`checking end conditions for player1 on ${piece.id}`);
                 for(let i = 1; i <= 9; i++) {
                     if(i !== 5) {
                         // console.log('neighbor ' + i);
@@ -346,7 +327,7 @@ const checkEndCondition = () => {
                 piece.classList.remove('black');
 
                 piece.classList.add('white');
-                console.log(`checking end conditions for player2 on ${piece.id}`);
+                // console.log(`checking end conditions for player2 on ${piece.id}`);
                 for(let i = 1; i <= 9; i++) {
                     if(i !== 5) {
                         // console.log('neighbor ' + i);
@@ -355,7 +336,6 @@ const checkEndCondition = () => {
                     }
                 }
                 piece.classList.remove('white');
-
             }
         }
     }
@@ -394,8 +374,6 @@ const checkDirectionForEnd = (indexDir, xDir, yDir, arr, pieceID) =>{
     }
 }
 
-
-
 const gameOver = () => {
     if(blackCount > whiteCount) {
         alert(`Game over! Player 1 wins with ${blackCount} black pieces!`)
@@ -408,45 +386,47 @@ const gameOver = () => {
 
 // End End condition
 // ==============================================================================================================
+
+
+
+
+
+// ==============================================================================================================
+// ==============================================================================================================
+// Set up the game, finally
+// ==============================================================================================================
 // ==============================================================================================================
 
+
+// =========================
+// GAME SETUP DOM NODES
+// =========================
+
+const speakButton = document.querySelector(".speakButton");
+const sitButton = document.querySelector(".sitButton");
+const beginModal = document.querySelector(".modal");
+
+
+
+const openBeginModal = () => {
+    beginModal.classList.toggle("open"); // difference between classList vs className?
+    speakButton.classList.toggle("closed"); // difference between classList vs className?
+
+}
+// toggleModal();
+const closeBeginModal = () => {
+    beginModal.classList.toggle("open"); // difference between classList vs className?
+
+}
+
+
+speakButton.addEventListener("click", openBeginModal);
+sitButton.addEventListener("click", closeBeginModal);
 
 
 
 
 const board = new Board();
 board.createGrid();
-// board.setUpStart();
-board.setUpLateGameForDebugging();
-
-
-
-
-
-// player tries to make a move
-    // isValidMove()
-
-        // checkNeighbors()
-            // checkSingleNeighbor() // --in given direction as parameter? --maybe temporarily assign ids to help with logistics if it gets messy // WHILE neighbor.value !== null ?? maybe??
-                // if neighbor.value = 0 // || neighbor.value = null // -- could I just do if neighbor.value == 0 bc that's 'falsey' and so is null?
-                    // return false for this neighbor
-                // else if neighbor.value = this.value //if both black or both white
-                    // return false for this neighbor
-                // else
-                    //  call checkSingleNeighbor() from this neighbor -- RECURSIONNNN
-
-
-            
-
-// end condition
-    // loop through all elements of both arrays AFTER EVERY PIECE IS PLACED
-        // if checkSpaceIsAvailable() (if value is 0)
-            // if any move is valid for placing a value 1 piece (white) OR if any move is valid for placing value 2 (black)
-                // return false, gameOver is not true yet
-            // else --so if there is no valid move for this space
-                // continue through the loop....if you get through the whole loop return true game is over...
-                // maybe decided by the current element being checked being the last in the array? this loop
-                // should never get to the end of the board if ANY move is possible bc it returns as soon
-                // as it finds a valid move, so that should be airtight.....hopefully :)
-            
-
+board.setUpStart();
+// board.setUpLateGameForDebugging();
