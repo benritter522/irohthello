@@ -375,19 +375,11 @@ const checkDirectionForEnd = (indexDir, xDir, yDir, arr, pieceID) =>{
 }
 
 const gameOver = () => {
-    if(blackCount > whiteCount) {
-        alert(`Game over! Player 1 wins with ${blackCount} black pieces!`)
-    } else if (whiteCount > blackCount) {
-        alert(`Game over! Player 2 wins with ${whiteCount} white pieces!`)
-    } else {
-        alert(`Game over! It's a tie!`)
-    }
+    openEndModal();
 }
 
 // End End condition
 // ==============================================================================================================
-
-
 
 
 
@@ -403,26 +395,49 @@ const gameOver = () => {
 // =========================
 
 const speakButton = document.querySelector(".speakButton");
+const beginModal = document.querySelector(".beginModal");
 const sitButton = document.querySelector(".sitButton");
-const beginModal = document.querySelector(".modal");
+const endModal = document.querySelector(".endModal");
+const restartButton = document.querySelector(".restartButton");
+const endScores = document.querySelector(".endScores");
+
 
 
 
 const openBeginModal = () => {
-    beginModal.classList.toggle("open"); // difference between classList vs className?
-    speakButton.classList.toggle("closed"); // difference between classList vs className?
-
+    beginModal.classList.toggle("open"); 
+    speakButton.classList.toggle("closed"); 
 }
 // toggleModal();
 const closeBeginModal = () => {
-    beginModal.classList.toggle("open"); // difference between classList vs className?
-
+    beginModal.classList.toggle("open"); 
 }
 
 
+const openEndModal = () => {
+    endModal.classList.toggle("open");
+    endModal.classList.remove("closed");
+
+    if(blackCount > whiteCount) {
+        endScores.innerText =   `Player 1 wins with ${blackCount} black pieces!
+                                \n\n\n\n\n\nWould you like to play again?`;
+                // alert(`Game over! Player 1 wins with ${blackCount} black pieces!`)
+    } else if (whiteCount > blackCount) {
+        endScores.innerText =   `Player 2 wins with ${whiteCount} white pieces!
+                                \n\n\n\n\n\nWould you like to play again?`;
+        // alert(`Game over! Player 2 wins with ${whiteCount} white pieces!`)
+    } else {
+        endScores.innerText =   `It's a tie! Each player has ${blackCount} pieces!
+                                \n\n\n\n\n\nWould you like to play again?`;
+        // alert(`Game over! It's a tie!`)
+    }
+}
+
 speakButton.addEventListener("click", openBeginModal);
 sitButton.addEventListener("click", closeBeginModal);
-
+restartButton.addEventListener("click", () => {
+    document.location.reload();
+});
 
 
 
@@ -430,3 +445,4 @@ const board = new Board();
 board.createGrid();
 board.setUpStart();
 // board.setUpLateGameForDebugging();
+
