@@ -48,10 +48,6 @@ ul {
     font-size: 30px;
 }
 .board {
-    /* JUST HAD AN IDEA. MAKE THE BOARD REALLY WIDE AND 
-    TURN THE BOARD INTO A SEATING AREA FOR
-    TWO CHARACTERS IT WILL SHOW SITTING AT THE BOARD
-    .GRID IS ENOUGH TO BE THE BOARD ON ITS OWN */
     position: absolute;
     top: 10%;
     left: 35%;
@@ -70,6 +66,9 @@ ul {
 
 }
 .grid {
+/* iroh's right hand gets clipped. make the board a little bigger. */
+
+
     /* width: 80%;
     height: 80%; /*padding-top: 100% for a 1-1 ratio?? */
     width: 300px;

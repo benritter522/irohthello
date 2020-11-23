@@ -89,13 +89,20 @@ class Board {
         for(let x = 2; x < 9; x++) {
             for(let y = 1; y < 9; y++) {
                 const piece = document.getElementById(`R${x}C${y}`);
-                if(x === 2) {
+                if(x === 2 && y === 2) {
+                    piece.classList.add('white');
+                } else if(x === 2) {
                     piece.classList.add('black');
                     blackCount ++;
                 } else {
                     piece.classList.add('white');
                     whiteCount ++;
                 }
+                
+                if(y === 1) {
+                    piece.classList.remove('black');
+                }
+
             }
         }
         updatePieceCounters();            
@@ -152,66 +159,62 @@ class Piece {
     }
     
     placePiece() { 
-        console.clear();
+        // console.clear();
         // if using 'e' MUST USE .TARGET BEFORE DOING STUFF!!!!!!!!
         // console.log(e.target);
-        if(player1CanMove || player2CanMove) { // this should actually happen at the end of the turn, not when a new click is done
-            if(isPiece(document.getElementById(this.id))) {//this.classList.contains('black') || this.classList.contains('white')) {
-                invalidMoveAlert();
-                // canPlace = false;
+        // if(player1CanMove || player2CanMove) { // this should actually happen at the end of the turn, not when a new click is done
+        
+        if(!isPiece(document.getElementById(this.id))) {
+            if(player1) {
+                this.classList.add('black'); 
+            } else { 
+                this.classList.add('white'); // if invalid space, must do this.classList.remove('white') later
             }
-            else {
-                if(player1) {
-                    this.classList.add('black'); 
-                } else { 
-                    this.classList.add('white'); // if invalid space, must do this.classList.remove('white') later
-                }
 
-                // grab center element's x and y indicies. right-left, top-bottom. 5 is center, AKA the piece being placed
-                const x_center = grabSecondCharAsNumber(this.id);
-                const y_center = grabFourthCharAsNumber(this.id);
-                
-                // for each neighbor
-                for(let i = 1; i <= 9; i++) {
-                    if(i !== 5) {
-                        const arr = [];
-                        checkDirectionMove(i, x_center + x_neighborDirections[i], y_center + y_neighborDirections[i], arr);
-                    }
+            // grab center element's x and y indicies. right-left, top-bottom. 5 is center, AKA the piece being placed
+            const x_center = grabSecondCharAsNumber(this.id);
+            const y_center = grabFourthCharAsNumber(this.id);
+            
+            // for each neighbor
+            for(let i = 1; i <= 9; i++) {
+                if(i !== 5) {
+                    const arr = [];
+                    checkDirectionMove(i, x_center + x_neighborDirections[i], y_center + y_neighborDirections[i], arr);
                 }
-                
-                if(canPlace) {
-                    document.querySelector('.whatsPlayed').innerText = `${this.id} was played.`;
-                    console.log(`can place a piece here at ${this.id}`);
-                    
-                    if(player1) {
-                        // if(player1CanMove) {
-                            player1 = false;
-                            blackCount ++;
-                            document.querySelector('.whosTurn').innerText = 'It\'s player 2\'s turn. \nPlay a white piece.';
-                        // } else {
-                        //     player1 = false;
-                        //     document.querySelector('.whosTurn').innerText = 'It\'s player 2\'s turn. \nPlay a white piece.';
-                        // }
-                    } 
-                    else { 
-                        player1 = true;
-                        whiteCount ++;
-                        document.querySelector('.whosTurn').innerText = 'It\'s player 1\'s turn. \nPlay a black piece.';
-                    }
-                    canPlace = false;
-                } else {
-                    // invalidMoveAlert();
-                    this.classList.remove('black');
-                    this.classList.remove('white');
-                }
-                updatePieceCounters();    
-                checkEndCondition();  
-                // console.log("player 1 can move: " + player1CanMove);
-                // console.log("player 2 can move: " + player2CanMove);      
             }
-        } else {
-            console.log("game over inside placePiece");
-            // gameOver();
+            
+            //If the piece being placed is a proper sandwich, canPlace is made true in checkDirection
+            if(canPlace) {
+                document.querySelector('.whatsPlayed').innerText = `${this.id} was played.`;
+                console.log(`can place a piece here at ${this.id}`);
+                
+                if(player1) {
+                    player1 = false;
+                    blackCount ++;
+                    document.querySelector('.whosTurn').innerText = 'It\'s player 2\'s turn. \nPlay a white piece.';
+                } 
+                else { 
+                    player1 = true;
+                    whiteCount ++;
+                    document.querySelector('.whosTurn').innerText = 'It\'s player 1\'s turn. \nPlay a black piece.';
+                }
+                canPlace = false;
+            } else {
+                // invalidMoveAlert();
+                this.classList.remove('black');
+                this.classList.remove('white');
+            }
+
+            updatePieceCounters();    
+            checkEndCondition();  
+
+            if(player1 && !player1CanMove) {
+                player1 = false;
+                document.querySelector('.whosTurn').innerText = 'It\'s player 2\'s turn. \nPlay a white piece.';
+            } else if(!player1 && !player2CanMove) {
+                player1 = true;
+                document.querySelector('.whosTurn').innerText = 'It\'s player 1\'s turn. \nPlay a black piece.';
+            }     
         }
     }
 
@@ -332,7 +335,7 @@ const checkEndCondition = () => {
             if(!isPiece(piece)) {//!piece.classList.contains('black') && !piece.classList.contains('white')) {
 
                 piece.classList.add('black');
-                console.log(`checking end conditions on ${piece.id}`);
+                console.log(`checking end conditions for player1 on ${piece.id}`);
                 for(let i = 1; i <= 9; i++) {
                     if(i !== 5) {
                         // console.log('neighbor ' + i);
@@ -343,7 +346,7 @@ const checkEndCondition = () => {
                 piece.classList.remove('black');
 
                 piece.classList.add('white');
-                console.log(`checking end conditions on ${piece.id}`);
+                console.log(`checking end conditions for player2 on ${piece.id}`);
                 for(let i = 1; i <= 9; i++) {
                     if(i !== 5) {
                         // console.log('neighbor ' + i);
@@ -351,21 +354,22 @@ const checkEndCondition = () => {
                         checkDirectionForEnd(i, x + x_neighborDirections[i], y + y_neighborDirections[i], arr, piece.id);
                     }
                 }
-
                 piece.classList.remove('white');
+
             }
         }
     }
+    console.log(`player1 can move: ${player1CanMove}`);
+    console.log(`player2 can move: ${player2CanMove}`)
+
     if((!player1CanMove && !player2CanMove) || (blackCount + whiteCount === 64)) {
-        console.log('game is over inside checkEndCondition');
-        // console.log(`player 1 can move: ${player1CanMove}`);
-        // console.log(`player 2 can move: ${player2CanMove}`);        
-        // gameOver();
+        console.log('game is over inside checkEndCondition');       
+        gameOver();
     }
 }
 
 const checkDirectionForEnd = (indexDir, xDir, yDir, arr, pieceID) =>{
-    console.log('checking direction for end');
+    // console.log('checking direction for end');
     const neighbor = document.getElementById(`R${xDir}C${yDir}`);
     const piece = document.getElementById(pieceID);
 
@@ -379,12 +383,12 @@ const checkDirectionForEnd = (indexDir, xDir, yDir, arr, pieceID) =>{
         } 
         if (arr.length > 0 && piece.classList.contains('black') && neighbor.classList.contains('black')) { //don't care if it's player1 or not, care about class of piece being placed
             player1CanMove = true;
-            console.log(`player 1 can move at neighbor ${neighbor.id}: ${player1CanMove}`)
+            console.log(`player 1 can move, neighbor is ${neighbor.id}: ${player1CanMove}`)
             return arr;
         }
         if (arr.length > 0 && piece.classList.contains('white') && neighbor.classList.contains('white')) {
             player2CanMove = true;
-            console.log(`player 2 can move at neighbor ${neighbor.id}: ${player2CanMove}`)
+            console.log(`player 2 can move, neighbor is ${neighbor.id}: ${player2CanMove}`)
             return arr;
         } 
     }
@@ -412,8 +416,8 @@ const gameOver = () => {
 
 const board = new Board();
 board.createGrid();
-board.setUpStart();
-// board.setUpLateGameForDebugging();
+// board.setUpStart();
+board.setUpLateGameForDebugging();
 
 
 
