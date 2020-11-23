@@ -5,18 +5,27 @@
     text-align: left;
 }
 h1 {
-    text-align: center;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    text-align: left;
+    margin: 20px;
+
+
 }
 body {
     /* background-color: darkolivegreen; */
     /* background-color: saddlebrown; */
     background-color: sienna;
     font-family: fantasy;
+    display: flex;
+    justify-content: center;
+    
 }
 ul {
     font-size: 25px;
     justify-content: left;
-    list-style-type: none;;
+    list-style-type: none;
 }
 .modalDisplayOff {
     display: none;
@@ -24,11 +33,12 @@ ul {
 .scoreboard {
     position: absolute;
     top: 10%;
-    left:00%;
+    left: 0%;
     display: flex;
     flex-direction: column;
     justify-content: left;
     text-align: left;
+    margin: 15px;
 }
 .scores {
     display: flex;
@@ -44,24 +54,26 @@ ul {
     .GRID IS ENOUGH TO BE THE BOARD ON ITS OWN */
     position: absolute;
     top: 10%;
-    left: 30%;
+    left: 35%;
     background-color: grey;
     /* width: 80%;
     height: 60%; */
-    width: 500px;
-    height: 898px;
+    width: 400px;
+    height: 798px;
     display: flex;
     align-items: center;
     flex-direction: column; /* this was magic for board rotating */
     justify-items: center;
     border: 10px solid black;
     border-radius: 30px;
+    /* text-align: center; */
+
 }
 .grid {
     /* width: 80%;
     height: 80%; /*padding-top: 100% for a 1-1 ratio?? */
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     background-color: darkgreen;
     border: 5px solid black;
     box-sizing: border-box;
@@ -70,6 +82,7 @@ ul {
     flex-wrap: wrap;
     /* align-content: space-between; */
     /* justify-content: space-between; */
+
     
 }
 /* .peeps {
@@ -83,13 +96,16 @@ ul {
     border: 1px solid darkgreen;
     border-radius: 5px;
     background: green;
+    text-align: center;
+
 
 }
 .edgeSpaces {
     background-color: darkgreen;
     border-radius: 10px;
     font-family: fantasy;
-    font-size: 30px;
+    font-size: 20px;
+    align-content: center;
     /* display: none; */
     /* can choose later to reformat based on 8x8 grid with "display-none" for the edge spaces. */
     /* for now that's not worth the effort...maybe never. */
