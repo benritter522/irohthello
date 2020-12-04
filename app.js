@@ -2,8 +2,6 @@
 // ^^^^THIS PROPERTY WOULD BE USEFUL IF I KNEW WHICH CLASS IS WHERE 
 // IN THE CLASSLIST. USE LATER FOR SOMETHING ELSE BUT NEVER FORGET
 
-// still need modal
-
 // set up players 1 and 2
 let player1 = true; // black plays first in othello
                     // less experienced player should choose black
@@ -151,7 +149,12 @@ class Piece {
             // if piece is not an edge space, adds a piece with an event listener
             space.classList.add('gameSpaces'); 
             space.appendChild(piece);
-            piece.addEventListener("click", this.placePiece);
+            const currentPiece = this;
+            piece.addEventListener("click", 
+                function () {
+                    currentPiece.placePiece(this);
+                }
+            );
         }
 
         // the id's are columns in the grid
@@ -160,19 +163,27 @@ class Piece {
         
         grid.appendChild(space);
     }
-    
-    placePiece() { 
-        
-        if(!isPiece(document.getElementById(this.id))) {
+    // fart() {
+    //     console.log('fart');
+    // }
+    placePiece(piece) { 
+        console.log(this.x);
+        console.log(this.y);
+        console.log(piece);
+        // this.fart();
+        // console.log(currentPiece);
+        // console.log(this);
+
+        if(!isPiece(document.getElementById(piece.id))) {
             if(player1) {
-                this.classList.add('black'); 
+                piece.classList.add('black'); 
             } else { 
-                this.classList.add('white'); // if invalid space, must do this.classList.remove('white') later
+                piece.classList.add('white'); // if invalid space, must do this.classList.remove('white') later
             }
 
             // grab center element's x and y indicies. right-left, top-bottom. 5 is center, AKA the piece being placed
-            const x_center = grabSecondCharAsNumber(this.id);
-            const y_center = grabFourthCharAsNumber(this.id);
+            const x_center = grabSecondCharAsNumber(piece.id);
+            const y_center = grabFourthCharAsNumber(piece.id);
             
             // for each neighbor
             for(let i = 1; i <= 9; i++) {
@@ -184,8 +195,8 @@ class Piece {
             
             //If the piece being placed is a proper sandwich, canPlace is made true in checkDirection
             if(canPlace) {
-                document.querySelector('.whatsPlayed').innerText = `${this.id} was played.`;
-                console.log(`can place a piece here at ${this.id}`);
+                document.querySelector('.whatsPlayed').innerText = `${piece.id} was played.`;
+                console.log(`can place a piece here at ${piece.id}`);
                 
                 if(player1) {
                     player1 = false;
@@ -200,8 +211,8 @@ class Piece {
                 canPlace = false;
             } else {
                 // invalidMoveAlert();
-                this.classList.remove('black');
-                this.classList.remove('white');
+                piece.classList.remove('black');
+                piece.classList.remove('white');
             }
 
             updatePieceCounters();    
